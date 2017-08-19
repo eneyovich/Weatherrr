@@ -5,11 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
-
 import java.io.BufferedReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,7 +29,6 @@ public class SixteenDaysFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.recycler_view_layout, container, false);
 
         String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
-        // getJSON(cityName);
 
         getDataFromXML(cityName);
 

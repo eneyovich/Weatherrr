@@ -12,7 +12,7 @@ public class WeatherParameters {
     String weatherData;
 
 
-    public WeatherParameters(String weatherDate, int imageResource, String temper, String weatherData) {
+    WeatherParameters(String weatherDate, int imageResource, String temper, String weatherData) {
         this.weatherDate = weatherDate;
         this.imageResource = imageResource;
         this.temper = temper;

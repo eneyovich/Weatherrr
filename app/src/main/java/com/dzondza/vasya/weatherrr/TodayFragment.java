@@ -61,27 +61,27 @@ public class TodayFragment extends BaseFragment {
             @Override
             protected void onPostExecute(Void aVoid) {
 
-                descript = gsonData.weather[0].description;
-                temp = gsonData.main.temp;
-                pressure = gsonData.main.pressure;
-                humidity = gsonData.main.humidity;
-                speed = gsonData.wind.speed;
-                direction = gsonData.wind.deg;
-                clouds = gsonData.clouds.all;
+                setDescript(gsonData.weather[0].description);
+                setTemp(gsonData.main.temp);
+                setPressure(gsonData.main.pressure);
+                setHumidity(gsonData.main.humidity);
+                setSpeed(gsonData.wind.speed);
+                setDirection(gsonData.wind.deg);
+                setClouds(gsonData.clouds.all);
 
 
                 setToTextView(R.id.text_view_today_time, Calendar.getInstance().getTime().toString());
 
                 ImageView forecastImage = getView().findViewById(R.id.today_image_view);
-                int imgResource = getImage(descript);
+                int imgResource = getImage(getDescript());
                 forecastImage.setImageResource(imgResource);
 
-                setToTextView(R.id.text_view_today_temp, "" + temp + " \u00B0C " + descript);
-                setToTextView(R.id.text_view_today_pressure, "Pressure           " + pressure + " hPa");
-                setToTextView(R.id.text_view_today_humidity, "Humidity          " + humidity + " %");
-                setToTextView(R.id.text_view_today_speed, "Speed              " + speed + " m/s");
-                setToTextView(R.id.text_view_today_direction, "Direction          " + direction + " deg");
-                setToTextView(R.id.text_view_today_clouds, "Clouds             " + clouds + " %");
+                setToTextView(R.id.text_view_today_temp, "" + getTemp() + " \u00B0C " + getDescript());
+                setToTextView(R.id.text_view_today_pressure, "Pressure           " + getPressure() + " hPa");
+                setToTextView(R.id.text_view_today_humidity, "Humidity          " + getHumidity() + " %");
+                setToTextView(R.id.text_view_today_speed, "Speed              " + getSpeed() + " m/s");
+                setToTextView(R.id.text_view_today_direction, "Direction          " + getDirection() + " deg");
+                setToTextView(R.id.text_view_today_clouds, "Clouds             " + getClouds() + " %");
             }
         }.execute();
     }

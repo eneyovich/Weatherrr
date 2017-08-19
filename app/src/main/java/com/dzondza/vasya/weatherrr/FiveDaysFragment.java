@@ -67,19 +67,19 @@ public class FiveDaysFragment extends BaseFragment {
                     calendar.add(Calendar.HOUR_OF_DAY, i*3);
                     Date time = calendar.getTime();
 
-                    temp = gsonData.list[i].main.temp;
-                    pressure = gsonData.list[i].main.pressure;
-                    humidity = gsonData.list[i].main.humidity;
-                    direction = gsonData.list[i].wind.deg;
-                    speed = gsonData.list[i].wind.speed;
-                    clouds = gsonData.list[i].clouds.all;
+                    setTemp(gsonData.list[i].main.temp);
+                    setPressure(gsonData.list[i].main.pressure);
+                    setHumidity(gsonData.list[i].main.humidity);
+                    setDirection(gsonData.list[i].wind.deg);
+                    setSpeed(gsonData.list[i].wind.speed);
+                    setClouds(gsonData.list[i].clouds.all);
 
-                    descript = gsonData.list[i].weather[0].description;
-                    int imgResource = getImage(descript);
+                    setDescript(gsonData.list[i].weather[0].description);
+                    int imgResource = getImage(getDescript());
 
 
                     forecastRecyclerList.add(new WeatherParameters(time.toString(), imgResource,
-                            temp + " \u00B0C", weatherParamsInTextView()));
+                            getTemp() + " \u00B0C", weatherParamsInTextView()));
                     recyclerAdapter.notifyDataSetChanged();
                 }
             }

@@ -63,25 +63,25 @@ public class SixteenDaysFragment extends BaseFragment {
 
                 for (int i = 0; i < gsonData.list.length; i++) {
 
-                    minTemp = gsonData.list[i].temp.min;
-                    maxTemp = gsonData.list[i].temp.max;
-                    pressure = gsonData.list[i].pressure;
-                    humidity = gsonData.list[i].humidity;
-                    speed = gsonData.list[i].speed;
-                    clouds = gsonData.list[i].clouds;
-                    direction = gsonData.list[i].deg;
+                    setMinTemp(gsonData.list[i].temp.min);
+                    setMaxTemp(gsonData.list[i].temp.max);
+                    setPressure(gsonData.list[i].pressure);
+                    setHumidity(gsonData.list[i].humidity);
+                    setSpeed(gsonData.list[i].speed);
+                    setClouds(gsonData.list[i].clouds);
+                    setDirection(gsonData.list[i].deg);
 
                     Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.DAY_OF_YEAR, i);
                     SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd y");
                     String date = sdf.format(calendar.getTime());
 
-                    descript = gsonData.list[i].weather[0].description;
-                    int imgResource = getImage(descript);
+                    setDescript(gsonData.list[i].weather[0].description);
+                    int imgResource = getImage(getDescript());
 
 
                     forecastRecyclerList.add(new WeatherParameters(date, imgResource, new StringBuilder()
-                            .append(minTemp).append("/").append(maxTemp).append(" \u00B0C")
+                            .append(getMinTemp()).append("/").append(getMaxTemp()).append(" \u00B0C")
                             .toString(), weatherParamsInTextView()));
                     recyclerAdapter.notifyDataSetChanged();
                 }

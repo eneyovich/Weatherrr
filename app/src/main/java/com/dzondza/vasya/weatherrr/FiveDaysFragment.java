@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import org.xmlpull.v1.XmlPullParser;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -17,6 +19,7 @@ import java.util.Date;
 
 public class FiveDaysFragment extends BaseFragment {
 
+    private List<Double> tempList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -36,13 +39,13 @@ public class FiveDaysFragment extends BaseFragment {
 
     @Override
     protected void getDataFromXML(final String city) {
+
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
                     XmlPullParser xmlParser = registerXMLParser("http://api.openweathermap.org/data/2.5/forecast?q=",
-                            city, "&mode=xml&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373",
-                            reader);
+                            city, "&mode=xml&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
 
                     while (xmlParser.getEventType() != XmlPullParser.END_DOCUMENT) {
 
@@ -52,7 +55,7 @@ public class FiveDaysFragment extends BaseFragment {
 
                                 case "temperature":
                                     if (xmlParser.getAttributeName(1).equals("value")) {
-                                        temperList.add(Double.parseDouble(xmlParser.getAttributeValue(1)));
+                                        tempList.add(Double.parseDouble(xmlParser.getAttributeValue(1)));
                                     }
 
                                 case "pressure":
@@ -106,14 +109,14 @@ public class FiveDaysFragment extends BaseFragment {
                     Date time = calendar.getTime();
 
                     int imgResource = getImage(weatherList.get(i));
-                    pressure = pressureList.get(i);
-                    humidity = humidityList.get(i);
-                    speed = speedList.get(i);
-                    clouds = cloudsList.get(i);
-                    direction = directionList.get(i);
+                    setPressure(pressureList.get(i));
+                    setHumidity(humidityList.get(i));
+                    setSpeed(speedList.get(i));
+                    setClouds(cloudsList.get(i));
+                    setDirection(directionList.get(i));
 
                     forecastRecyclerList.add(new WeatherParameters(time.toString(), imgResource,
-                            temperList.get(i) + " \u00B0C", weatherParamsInTextView()));
+                            tempList.get(i) + " \u00B0C", weatherParamsInTextView()));
 
                     recyclerAdapter.notifyDataSetChanged();
                 }

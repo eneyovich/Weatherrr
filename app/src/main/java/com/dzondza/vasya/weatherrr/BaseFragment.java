@@ -23,12 +23,11 @@ import java.util.List;
 
 public abstract class BaseFragment extends Fragment {
 
-    BufferedReader reader;
-    int humidity, clouds;
-    double temp, pressure, speed, direction;
+    private int humidity, clouds;
+    private double temp, pressure, speed, direction;
     RecyclerAdapter recyclerAdapter;
-    protected List<WeatherParameters> forecastRecyclerList;
-    List<Double> temperList = new ArrayList<>();
+    List<WeatherParameters> forecastRecyclerList;
+
     List<Double> directionList = new ArrayList<>();
     List<Integer> humidityList = new ArrayList<>();
     List<Double> speedList = new ArrayList<>();
@@ -127,13 +126,12 @@ public abstract class BaseFragment extends Fragment {
     }
 
     //creates xmlParser and gets data in xml format
-    protected XmlPullParser registerXMLParser(String urlBegin, String city, String urlEnd,
-                                              BufferedReader reader) {
+    protected XmlPullParser registerXMLParser(String urlBegin, String city, String urlEnd) {
         try {
             URL url = new URL(urlBegin + city + urlEnd);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -153,4 +151,53 @@ public abstract class BaseFragment extends Fragment {
 
 
     protected abstract void getDataFromXML(final String city);
+
+
+    public int getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(int humidity) {
+        this.humidity = humidity;
+    }
+
+    public int getClouds() {
+        return clouds;
+    }
+
+    public void setClouds(int clouds) {
+        this.clouds = clouds;
+    }
+
+    public double getTemp() {
+        return temp;
+    }
+
+    public void setTemp(double temp) {
+        this.temp = temp;
+    }
+
+    public double getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(double pressure) {
+        this.pressure = pressure;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public double getDirection() {
+        return direction;
+    }
+
+    public void setDirection(double direction) {
+        this.direction = direction;
+    }
 }

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import org.xmlpull.v1.XmlPullParser;
-import java.io.BufferedReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,9 +18,8 @@ import java.util.List;
 
 public class SixteenDaysFragment extends BaseFragment {
 
-    BufferedReader reader;
-    List<String> minTempList = new ArrayList<>();
-    List<String> maxTempList = new ArrayList<>();
+    private List<String> minTempList = new ArrayList<>();
+    private List<String> maxTempList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,8 +43,7 @@ public class SixteenDaysFragment extends BaseFragment {
             protected Void doInBackground(Void... voids) {
                 try {
                     XmlPullParser xmlParser = registerXMLParser("http://api.openweathermap.org/data/2.5/forecast/daily?q=",
-                            city, "&mode=xml&units=metric&cnt=16&APPID=419b4a7ba318ef5286319f89b37ed373",
-                            reader);
+                            city, "&mode=xml&units=metric&cnt=16&APPID=419b4a7ba318ef5286319f89b37ed373");
 
                     while (xmlParser.getEventType() != XmlPullParser.END_DOCUMENT) {
 
@@ -114,11 +111,11 @@ public class SixteenDaysFragment extends BaseFragment {
                     String date = sdf.format(calendar.getTime());
 
                     int imgResource = getImage(weatherList.get(i));
-                    pressure = pressureList.get(i);
-                    humidity = humidityList.get(i);
-                    speed = speedList.get(i);
-                    clouds = cloudsList.get(i);
-                    direction = directionList.get(i);
+                    setPressure(pressureList.get(i));
+                    setHumidity(humidityList.get(i));
+                    setSpeed(speedList.get(i));
+                    setClouds(cloudsList.get(i));
+                    setDirection(directionList.get(i));
 
                     forecastRecyclerList.add(new WeatherParameters(date, imgResource,
                             new StringBuilder(minTempList.get(i)).append("/").append(maxTempList.get(i))

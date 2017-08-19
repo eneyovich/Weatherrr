@@ -37,8 +37,8 @@ public class TodayFragment extends BaseFragment {
             @Override
             protected Void doInBackground(Void... voids) {
 
-                basicJson = getBasicJson("http://api.openweathermap.org/data/2.5/weather?q=",
-                        city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
+                setBasicJson(initializeBasicJson("http://api.openweathermap.org/data/2.5/weather?q=",
+                        city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373"));
 
                 return null;
             }
@@ -46,16 +46,16 @@ public class TodayFragment extends BaseFragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 try {
-                    JSONObject mainJson = basicJson.getJSONObject("main");
-                    JSONObject windJson = basicJson.getJSONObject("wind");
-                    JSONObject weatherJson = basicJson.getJSONArray("weather").getJSONObject(0);
+                    JSONObject mainJson = getBasicJson().getJSONObject("main");
+                    JSONObject windJson = getBasicJson().getJSONObject("wind");
+                    JSONObject weatherJson = getBasicJson().getJSONArray("weather").getJSONObject(0);
 
-                    temp = mainJson.getDouble("temp");
-                    pressure = mainJson.getDouble("pressure");
-                    humidity = mainJson.getInt("humidity");
-                    speed = windJson.getDouble("speed");
-                    direction = windJson.getDouble("deg");
-                    clouds = basicJson.getJSONObject("clouds").getInt("all");
+                    setTemp(mainJson.getDouble("temp"));
+                    setPressure(mainJson.getDouble("pressure"));
+                    setHumidity(mainJson.getInt("humidity"));
+                    setSpeed(windJson.getDouble("speed"));
+                    setDirection(windJson.getDouble("deg"));
+                    setClouds(getBasicJson().getJSONObject("clouds").getInt("all"));
                     String weatherDescript = weatherJson.getString("description");
 
 
@@ -65,12 +65,12 @@ public class TodayFragment extends BaseFragment {
                     int imgResource = getImage(weatherDescript);
                     forecastImage.setImageResource(imgResource);
 
-                    setToTextView(R.id.text_view_today_temp, "" + temp + " \u00B0C " + weatherDescript);
-                    setToTextView(R.id.text_view_today_pressure, "Pressure           " + pressure + " hPa");
-                    setToTextView(R.id.text_view_today_humidity, "Humidity          " + humidity + " %");
-                    setToTextView(R.id.text_view_today_speed, "Speed              " + speed + " m/s");
-                    setToTextView(R.id.text_view_today_direction, "Direction          " + direction + " deg");
-                    setToTextView(R.id.text_view_today_clouds, "Clouds             " + clouds + " %");
+                    setToTextView(R.id.text_view_today_temp, "" + getTemp() + " \u00B0C " + weatherDescript);
+                    setToTextView(R.id.text_view_today_pressure, "Pressure           " + getPressure() + " hPa");
+                    setToTextView(R.id.text_view_today_humidity, "Humidity          " + getHumidity() + " %");
+                    setToTextView(R.id.text_view_today_speed, "Speed              " + getSpeed() + " m/s");
+                    setToTextView(R.id.text_view_today_direction, "Direction          " + getDirection() + " deg");
+                    setToTextView(R.id.text_view_today_clouds, "Clouds             " + getClouds() + " %");
 
                 } catch (JSONException e) {
                     Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();

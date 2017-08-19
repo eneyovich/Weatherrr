@@ -41,8 +41,8 @@ public class FiveDaysFragment extends BaseFragment {
             @Override
             protected Void doInBackground(Void... voids) {
 
-                basicJson = getBasicJson("http://api.openweathermap.org/data/2.5/forecast?q=",
-                        city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
+                setBasicJson(initializeBasicJson("http://api.openweathermap.org/data/2.5/forecast?q=",
+                        city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373"));
 
                 return null;
             }
@@ -50,19 +50,19 @@ public class FiveDaysFragment extends BaseFragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 try {
-                    JSONArray allDaysJson = basicJson.getJSONArray("list");
+                    JSONArray allDaysJson = getBasicJson().getJSONArray("list");
                     for (int i = 0; i < allDaysJson.length(); i++) {
                         JSONObject oneDayJSON = allDaysJson.getJSONObject(i);
 
                         JSONObject mainJson = oneDayJSON.getJSONObject("main");
-                        temp = mainJson.getDouble("temp");
-                        pressure = mainJson.getDouble("pressure");
-                        humidity = mainJson.getInt("humidity");
+                        setTemp(mainJson.getDouble("temp"));
+                        setPressure(mainJson.getDouble("pressure"));
+                        setHumidity(mainJson.getInt("humidity"));
 
                         JSONObject windJson = oneDayJSON.getJSONObject("wind");
-                        direction = windJson.getDouble("deg");
-                        speed = windJson.getDouble("speed");
-                        clouds = oneDayJSON.getJSONObject("clouds").getInt("all");
+                        setDirection(windJson.getDouble("deg"));
+                        setSpeed(windJson.getDouble("speed"));
+                        setClouds(oneDayJSON.getJSONObject("clouds").getInt("all"));
 
                         Calendar calendar = Calendar.getInstance();
                         calendar.add(Calendar.HOUR_OF_DAY, i*3);
@@ -74,7 +74,7 @@ public class FiveDaysFragment extends BaseFragment {
 
 
                         forecastRecyclerList.add(new WeatherParameters(time.toString(), imgResource,
-                                temp + " \u00B0C", weatherParamsInTextView()));
+                                getTemp() + " \u00B0C", weatherParamsInTextView()));
 
                         recyclerAdapter.notifyDataSetChanged();
                     }

@@ -39,8 +39,8 @@ public class SixteenDaysFragment extends BaseFragment {
             @Override
             protected Void doInBackground(Void... voids) {
 
-                basicJson = getBasicJson("http://api.openweathermap.org/data/2.5/forecast/daily?q=",
-                        city, "&units=metric&cnt=16&APPID=419b4a7ba318ef5286319f89b37ed373");
+                setBasicJson(initializeBasicJson("http://api.openweathermap.org/data/2.5/forecast/daily?q=",
+                        city, "&units=metric&cnt=16&APPID=419b4a7ba318ef5286319f89b37ed373"));
 
                 return null;
             }
@@ -50,7 +50,7 @@ public class SixteenDaysFragment extends BaseFragment {
             protected void onPostExecute(Void aVoid) {
 
                 try {
-                    JSONArray allDaysJson = basicJson.getJSONArray("list");
+                    JSONArray allDaysJson = getBasicJson().getJSONArray("list");
 
                     for (int i = 0; i < allDaysJson.length(); i++) {
 
@@ -58,13 +58,13 @@ public class SixteenDaysFragment extends BaseFragment {
 
                         JSONObject tempOneDayJson = oneDayJSON.getJSONObject("temp");
 
-                        minTemp = tempOneDayJson.getDouble("min");
-                        maxTemp = tempOneDayJson.getDouble("max");
-                        pressure = oneDayJSON.getDouble("pressure");
-                        humidity = oneDayJSON.getInt("humidity");
-                        speed = oneDayJSON.getDouble("speed");
-                        clouds = oneDayJSON.getInt("clouds");
-                        direction = oneDayJSON.getDouble("deg");
+                        setMinTemp(tempOneDayJson.getDouble("min"));
+                        setMaxTemp(tempOneDayJson.getDouble("max"));
+                        setPressure(oneDayJSON.getDouble("pressure"));
+                        setHumidity(oneDayJSON.getInt("humidity"));
+                        setSpeed(oneDayJSON.getDouble("speed"));
+                        setClouds(oneDayJSON.getInt("clouds"));
+                        setDirection(oneDayJSON.getDouble("deg"));
 
 
                         Calendar calendar = Calendar.getInstance();
@@ -78,7 +78,7 @@ public class SixteenDaysFragment extends BaseFragment {
 
 
                         forecastRecyclerList.add(new WeatherParameters(date, imgResource, new StringBuilder()
-                                .append(minTemp).append("/").append(maxTemp).append(" \u00B0C")
+                                .append(getMinTemp()).append("/").append(getMaxTemp()).append(" \u00B0C")
                                 .toString(), weatherParamsInTextView()));
 
                         recyclerAdapter.notifyDataSetChanged();

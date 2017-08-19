@@ -21,11 +21,11 @@ import java.util.List;
 
 public abstract class BaseFragment extends Fragment {
 
-    JSONObject basicJson;
-    int humidity, clouds;
-    double temp, minTemp, maxTemp, pressure, speed, direction;
+    private JSONObject basicJson;
+    private int humidity, clouds;
+    private double temp, minTemp, maxTemp, pressure, speed, direction;
     RecyclerAdapter recyclerAdapter;
-    protected List<WeatherParameters> forecastRecyclerList;
+    List<WeatherParameters> forecastRecyclerList;
 
 
     protected void initializeRecycler (View view){
@@ -53,7 +53,7 @@ public abstract class BaseFragment extends Fragment {
 
 
     // opens HttpURLConnection and returns response in JSON format
-    protected JSONObject getBasicJson(String urlBeginning, String city, String urlEnd) {
+    protected JSONObject initializeBasicJson(String urlBeginning, String city, String urlEnd) {
         try {
             URL url = new URL(urlBeginning + city + urlEnd);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -119,4 +119,77 @@ public abstract class BaseFragment extends Fragment {
 
 
     protected abstract void getJSON(final String city);
+
+
+    public JSONObject getBasicJson() {
+        return basicJson;
+    }
+
+    public void setBasicJson(JSONObject basicJson) {
+        this.basicJson = basicJson;
+    }
+
+    public int getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(int humidity) {
+        this.humidity = humidity;
+    }
+
+    public int getClouds() {
+        return clouds;
+    }
+
+    public void setClouds(int clouds) {
+        this.clouds = clouds;
+    }
+
+    public double getTemp() {
+        return temp;
+    }
+
+    public void setTemp(double temp) {
+        this.temp = temp;
+    }
+
+    public double getMinTemp() {
+        return minTemp;
+    }
+
+    public void setMinTemp(double minTemp) {
+        this.minTemp = minTemp;
+    }
+
+    public double getMaxTemp() {
+        return maxTemp;
+    }
+
+    public void setMaxTemp(double maxTemp) {
+        this.maxTemp = maxTemp;
+    }
+
+    public double getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(double pressure) {
+        this.pressure = pressure;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public double getDirection() {
+        return direction;
+    }
+
+    public void setDirection(double direction) {
+        this.direction = direction;
+    }
 }

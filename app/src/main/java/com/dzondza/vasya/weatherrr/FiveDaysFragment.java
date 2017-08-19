@@ -2,15 +2,16 @@ package com.dzondza.vasya.weatherrr;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParser;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -20,17 +21,14 @@ import java.util.Date;
  */
 
 public class FiveDaysFragment extends BaseFragment {
+    private GsonStructure gsonData;
 
-
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.recycler_view_layout, container, false);
 
         String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
-
-        getDataFromXML(cityName);
+        getJSON(cityName);
 
         initializeRecycler(view);
 
@@ -39,61 +37,22 @@ public class FiveDaysFragment extends BaseFragment {
 
 
     @Override
-    protected void getDataFromXML(final String city) {
+    protected void getJSON(final String city) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
-                    XmlPullParser xmlParser = registerXMLParser("http://api.openweathermap.org/data/2.5/forecast?q=",
-                            city, "&mode=xml&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373",
-                            reader);
+                    URL url = new URL("http://api.openweathermap.org/data/2.5/forecast?q=" + city
+                            + "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-                    while (xmlParser.getEventType() != XmlPullParser.END_DOCUMENT) {
+                    Gson gson = new Gson();
+                    gsonData = gson.fromJson(reader, GsonStructure.class);
 
-                        if (xmlParser.getEventType() == XmlPullParser.START_TAG) {
+                    reader.close();
+                    connection.disconnect();
 
-                            switch (xmlParser.getName()) {
-
-                                case "temperature":
-                                    if (xmlParser.getAttributeName(1).equals("value")) {
-                                        temperList.add(Double.parseDouble(xmlParser.getAttributeValue(1)));
-                                    }
-
-                                case "pressure":
-                                    if (xmlParser.getAttributeName(1).equals("value")) {
-                                        pressureList.add(Double.parseDouble(xmlParser.getAttributeValue(1)));
-                                    }
-                                    break;
-
-                                case "humidity":
-                                    if (xmlParser.getAttributeName(0).equals("value")) {
-                                        humidityList.add(Integer.parseInt(xmlParser.getAttributeValue(0)));
-                                    }
-
-                                case "windSpeed":
-                                    if (xmlParser.getAttributeName(0).equals("mps")) {
-                                        speedList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
-                                    }
-                                    break;
-
-                                case "clouds":
-                                    if (xmlParser.getAttributeName(1).equals("all")) {
-                                        cloudsList.add(Integer.parseInt(xmlParser.getAttributeValue(1)));
-                                    }
-                                    if (xmlParser.getAttributeName(0).equals("value")) {
-                                        weatherList.add(xmlParser.getAttributeValue(0));
-                                    }
-                                    break;
-
-                                case "windDirection":
-                                    if (xmlParser.getAttributeName(0).equals("deg")) {
-                                        directionList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
-                                    }
-                                    break;
-                            }
-                        }
-                        xmlParser.next();
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -104,24 +63,61 @@ public class FiveDaysFragment extends BaseFragment {
             @Override
             protected void onPostExecute(Void aVoid) {
 
-                for (int i = 0; i < weatherList.size(); i++) {
+                for (int i = 0; i < gsonData.list.length; i++) {
+
                     Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.HOUR_OF_DAY, i*3);
                     Date time = calendar.getTime();
 
-                    int imgResource = getImage(weatherList.get(i));
-                    pressure = pressureList.get(i);
-                    humidity = humidityList.get(i);
-                    speed = speedList.get(i);
-                    clouds = cloudsList.get(i);
-                    direction = directionList.get(i);
+                    temp = gsonData.list[i].main.temp;
+                    pressure = gsonData.list[i].main.pressure;
+                    humidity = gsonData.list[i].main.humidity;
+                    direction = gsonData.list[i].wind.deg;
+                    speed = gsonData.list[i].wind.speed;
+                    clouds = gsonData.list[i].clouds.all;
+
+                    descript = gsonData.list[i].weather[0].description;
+                    int imgResource = getImage(descript);
+
 
                     forecastRecyclerList.add(new WeatherParameters(time.toString(), imgResource,
-                            temperList.get(i) + " \u00B0C", weatherParamsInTextView()));
-
+                            temp + " \u00B0C", weatherParamsInTextView()));
                     recyclerAdapter.notifyDataSetChanged();
                 }
             }
         }.execute();
+    }
+
+
+    //Gson structure
+    private class GsonStructure {
+
+        private List[] list;
+
+        private class List {
+            private Main main;
+            private Wind wind;
+            private Clouds clouds;
+            private Weather[] weather;
+
+            private class Main {
+                private double temp;
+                private double pressure;
+                private int humidity;
+            }
+
+            private class Weather {
+                private String description;
+            }
+
+            private class Clouds {
+                private int all;
+            }
+
+            private class Wind {
+                private double speed;
+                private double deg;
+            }
+        }
     }
 }

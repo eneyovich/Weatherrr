@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:weightSum="1"
+    android:background="@drawable/background_image">
+
+
+    <android.support.v7.widget.CardView
+        style="@style/MyTodayCardViewStyle"
+        android:layout_weight="0.3"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="5dp"
+        app:contentPadding="10dp"
+        app:cardBackgroundColor="#00000000">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/text_view_today_time"
+                android:layout_weight="0.34"
+                android:textSize="18sp"
+                style="@style/MyTodayInsideUpperCardViewStyle"/>
+
+            <ImageView
+                android:id="@+id/today_image_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.32"
+                android:layout_gravity="center"
+                android:paddingEnd="15dp"
+                android:contentDescription="@string/image_descript"/>
+
+            <TextView
+                android:id="@+id/text_view_today_temp"
+                android:layout_weight="0.34"
+                android:textSize="22sp"
+                style="@style/MyTodayInsideUpperCardViewStyle"/>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+
+    <android.support.v7.widget.CardView
+        style="@style/MyTodayCardViewStyle"
+        android:layout_weight="0.7"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="4dp"
+        app:contentPadding="20dp"
+        app:cardBackgroundColor="#00000000">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_forecast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="35dp">
+
+            <TextView
+                android:id="@+id/text_view_today_pressure"
+                style="@style/MyTodayInsideLowerCardViewStyle"/>
+
+            <TextView
+                android:id="@+id/text_view_today_humidity"
+                style="@style/MyTodayInsideLowerCardViewStyle"/>
+
+            <TextView
+                android:id="@+id/text_view_today_speed"
+                style="@style/MyTodayInsideLowerCardViewStyle"/>
+
+            <TextView
+                android:id="@+id/text_view_today_direction"
+                style="@style/MyTodayInsideLowerCardViewStyle"/>
+
+            <TextView
+                android:id="@+id/text_view_today_clouds"
+                style="@style/MyTodayInsideLowerCardViewStyle"/>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

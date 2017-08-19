@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Weatherrr</string>
+
+    <string name="city">City</string>
+    <string name="open_drawer">Open Navigation Drawer</string>
+    <string name="close_drawer">Close Navigation Drawer</string>
+    <string name="dialog_city_text_view">Enter CITY for forecast</string>
+    <string name="dialog_city_hint">enter city</string>
+    <string name="navigat_today">Today Weather</string>
+    <string name="navigat_5days">5 days Weather</string>
+    <string name="navigat_16days">16 days Weather</string>
+    <string name="navigat_share">Share</string>
+    <string name="image_descript">can\'t load image</string>
+    <string name="loading_error">Data not Loaded</string>
+    <string name="communicate">Communicate</string>
+
+</resources>

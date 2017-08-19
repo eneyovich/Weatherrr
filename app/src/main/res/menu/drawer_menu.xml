@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/drawer_items"
+           android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_weatherToday"
+            android:title="@string/navigat_today"/>
+        <item
+            android:id="@+id/nav_weather5days"
+            android:title="@string/navigat_5days"/>
+        <item
+            android:id="@+id/nav_weather16days"
+            android:title="@string/navigat_16days"/>
+        <item
+            android:id="@+id/nav_city_button"
+            app:actionLayout="@layout/city_button"/>
+    </group>
+
+    <item android:title="@string/communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:title="@string/navigat_share"/>
+        </menu>
+
+    </item>
+
+</menu>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="180dp"
     android:gravity="bottom"
-    android:background="@drawable/imgonline">
+    android:background="@drawable/drawable_header_navigation">
 
     <TextView
         android:id="@+id/header_textView_upper"

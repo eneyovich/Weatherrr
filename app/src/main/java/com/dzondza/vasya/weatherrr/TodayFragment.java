@@ -30,7 +30,7 @@ public class TodayFragment extends BaseFragment {
 
 
     @Override
-    protected void getDataFromXML(final String city) {
+    void getDataFromXML(final String city) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -69,7 +69,7 @@ public class TodayFragment extends BaseFragment {
 
                                 case "clouds":
                                     if (xmlParser.getAttributeName(1).equals("name")) {
-                                        weatherList.add(xmlParser.getAttributeValue(1));
+                                        mWeatherList.add(xmlParser.getAttributeValue(1));
                                     }
                                     if (xmlParser.getAttributeName(0).equals("value")) {
                                         setClouds(Integer.parseInt(xmlParser.getAttributeValue(0)));
@@ -98,10 +98,10 @@ public class TodayFragment extends BaseFragment {
                     setToTextView(R.id.text_view_today_time, Calendar.getInstance().getTime().toString());
 
                     ImageView forecastImage = getView().findViewById(R.id.today_image_view);
-                    int imgResource = getImage(weatherList.get(0));
+                    int imgResource = getImage(mWeatherList.get(0));
                     forecastImage.setImageResource(imgResource);
 
-                    setToTextView(R.id.text_view_today_temp, "" + getTemp() + " \u00B0C " + weatherList.get(0));
+                    setToTextView(R.id.text_view_today_temp, "" + getTemp() + " \u00B0C " + mWeatherList.get(0));
                     setToTextView(R.id.text_view_today_pressure, "Pressure           " + getPressure() + " hPa");
                     setToTextView(R.id.text_view_today_humidity, "Humidity          " + getHumidity() + " %");
                     setToTextView(R.id.text_view_today_speed, "Speed              " + getSpeed() + " m/s");

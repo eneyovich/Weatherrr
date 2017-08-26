@@ -18,13 +18,13 @@ import java.util.List;
 
 public class SixteenDaysFragment extends BaseFragment {
 
-    private List<String> minTempList = new ArrayList<>();
-    private List<String> maxTempList = new ArrayList<>();
+    private List<String> mMinTempList = new ArrayList<>();
+    private List<String> mMaxTempList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recycler_view_layout, container, false);
+        View view = inflater.inflate(R.layout.view_recycler_view_layout, container, false);
 
         String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
 
@@ -53,41 +53,41 @@ public class SixteenDaysFragment extends BaseFragment {
 
                                 case "temperature":
                                     if (xmlParser.getAttributeName(1).equals("min")) {
-                                        minTempList.add(xmlParser.getAttributeValue(1));
+                                        mMinTempList.add(xmlParser.getAttributeValue(1));
                                     }
                                     if (xmlParser.getAttributeName(2).equals("max")) {
-                                        maxTempList.add(xmlParser.getAttributeValue(2));
+                                        mMaxTempList.add(xmlParser.getAttributeValue(2));
                                     }
 
                                 case "pressure":
                                     if (xmlParser.getAttributeName(1).equals("value")) {
-                                        pressureList.add(Double.parseDouble(xmlParser.getAttributeValue(1)));
+                                        mPressureList.add(Double.parseDouble(xmlParser.getAttributeValue(1)));
                                     }
                                     break;
 
                                 case "humidity":
                                     if (xmlParser.getAttributeName(0).equals("value")) {
-                                        humidityList.add(Integer.parseInt(xmlParser.getAttributeValue(0)));
+                                        mHumidityList.add(Integer.parseInt(xmlParser.getAttributeValue(0)));
                                     }
 
                                 case "windSpeed":
                                     if (xmlParser.getAttributeName(0).equals("mps")) {
-                                        speedList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
+                                        mSpeedList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
                                     }
                                     break;
 
                                 case "clouds":
                                     if (xmlParser.getAttributeName(1).equals("all")) {
-                                        cloudsList.add(Integer.parseInt(xmlParser.getAttributeValue(1)));
+                                        mCloudsList.add(Integer.parseInt(xmlParser.getAttributeValue(1)));
                                     }
                                     if (xmlParser.getAttributeName(0).equals("value")) {
-                                        weatherList.add(xmlParser.getAttributeValue(0));
+                                        mWeatherList.add(xmlParser.getAttributeValue(0));
                                     }
                                     break;
 
                                 case "windDirection":
                                     if (xmlParser.getAttributeName(0).equals("deg")) {
-                                        directionList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
+                                        mDirectionList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
                                     }
                                     break;
                             }
@@ -104,24 +104,24 @@ public class SixteenDaysFragment extends BaseFragment {
             @Override
             protected void onPostExecute(Void aVoid) {
 
-                for (int i = 0; i < weatherList.size(); i++) {
+                for (int i = 0; i < mWeatherList.size(); i++) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.DAY_OF_YEAR, i);
                     SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd y");
                     String date = sdf.format(calendar.getTime());
 
-                    int imgResource = getImage(weatherList.get(i));
-                    setPressure(pressureList.get(i));
-                    setHumidity(humidityList.get(i));
-                    setSpeed(speedList.get(i));
-                    setClouds(cloudsList.get(i));
-                    setDirection(directionList.get(i));
+                    int imgResource = getImage(mWeatherList.get(i));
+                    setPressure(mPressureList.get(i));
+                    setHumidity(mHumidityList.get(i));
+                    setSpeed(mSpeedList.get(i));
+                    setClouds(mCloudsList.get(i));
+                    setDirection(mDirectionList.get(i));
 
-                    forecastRecyclerList.add(new WeatherParameters(date, imgResource,
-                            new StringBuilder(minTempList.get(i)).append("/").append(maxTempList.get(i))
+                    mForecastRecyclerList.add(new WeatherParameters(date, imgResource,
+                            new StringBuilder(mMinTempList.get(i)).append("/").append(mMaxTempList.get(i))
                                     .append(" \u00B0C").toString(), weatherParamsInTextView()));
 
-                    recyclerAdapter.notifyDataSetChanged();
+                    mRecyclerAdapter.notifyDataSetChanged();
                 }
             }
         }.execute();

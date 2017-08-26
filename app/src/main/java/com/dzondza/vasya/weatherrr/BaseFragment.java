@@ -5,8 +5,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
-import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.BufferedReader;
@@ -23,28 +21,29 @@ import java.util.List;
 
 public abstract class BaseFragment extends Fragment {
 
-    private int humidity, clouds;
-    private double temp, pressure, speed, direction;
-    RecyclerAdapter recyclerAdapter;
-    List<WeatherParameters> forecastRecyclerList;
+    private int mHumidity, mClouds;
+    private double mTemp, mPressure, mSpeed, mDirection;
+    RecyclerAdapter mRecyclerAdapter;
+    List<WeatherParameters> mForecastRecyclerList;
 
-    List<Double> directionList = new ArrayList<>();
-    List<Integer> humidityList = new ArrayList<>();
-    List<Double> speedList = new ArrayList<>();
-    List<Integer> cloudsList = new ArrayList<>();
-    List<Double> pressureList = new ArrayList<>();
-    List<String> weatherList = new ArrayList<>();
+    List<Double> mDirectionList = new ArrayList<>();
+    List<Integer> mHumidityList = new ArrayList<>();
+    List<Double> mSpeedList = new ArrayList<>();
+    List<Integer> mCloudsList = new ArrayList<>();
+    List<Double> mPressureList = new ArrayList<>();
+    List<String> mWeatherList = new ArrayList<>();
 
 
-    protected void initializeRecycler (View view){
-        forecastRecyclerList = new ArrayList<>();
+    //initializes recyclerViews
+    void initializeRecycler (View view){
+        mForecastRecyclerList = new ArrayList<>();
 
         RecyclerView mRecyclerView = view.findViewById(R.id.recycler_id);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(manager);
 
-        recyclerAdapter = new RecyclerAdapter(forecastRecyclerList);
-        mRecyclerView.setAdapter(recyclerAdapter);
+        mRecyclerAdapter = new RecyclerAdapter(mForecastRecyclerList);
+        mRecyclerView.setAdapter(mRecyclerAdapter);
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(),
                 manager.getOrientation()));
@@ -53,80 +52,50 @@ public abstract class BaseFragment extends Fragment {
     }
 
 
-    //sets weather params in texView in 5 & 16 days fragments
-    protected String weatherParamsInTextView() {
-        return "pressure " + pressure + " hPa\nhumidity " + humidity + " %\nspeed " + speed
-                + " m/s\nclouds " + clouds + " %\ndirection " + direction + " deg";
-    }
-
-
-    // opens HttpURLConnection and returns response in JSON format
-    protected JSONObject getBasicJson(String urlBeginning, String city, String urlEnd) {
-        try {
-            URL url = new URL(urlBeginning + city + urlEnd);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String tmp;
-            StringBuffer buffer = new StringBuffer(1024);
-
-            while ((tmp = reader.readLine()) != null) {
-                buffer.append(tmp);
-            }
-            JSONObject jsonObj = new JSONObject(buffer.toString());
-
-            if (jsonObj.getInt("cod") != 200) {
-                Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
-            }
-            reader.close();
-
-            connection.disconnect();
-
-            return jsonObj;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    //sets weather parameters in texView in 5 & 16 days fragments
+    String weatherParamsInTextView() {
+        return "mPressure " + mPressure + " hPa\nmHumidity " + mHumidity + " %\nmSpeed " + mSpeed
+                + " m/s\nmClouds " + mClouds + " %\nmDirection " + mDirection + " deg";
     }
 
 
     //chooses image resource id to descript forecast
-    protected int getImage(String weatherDescript) {
+    int getImage(String weatherDescript) {
         int imageResource;
         switch (weatherDescript) {
             case "light rain":
             case "light intensity shower rain":
-                imageResource = R.drawable.raining_little;
+                imageResource = R.drawable.drawable_raining_little;
                 break;
-            case "overcast clouds":
+            case "overcast mClouds":
             case "haze":
-                imageResource = R.drawable.foggy_much;
+                imageResource = R.drawable.drawable_foggy_much;
                 break;
             case "moderate rain":
             case "heavy intensity rain":
             case "shower rain":
-                imageResource = R.drawable.raining_medium;
+                imageResource = R.drawable.drawable_raining_medium;
                 break;
-            case "broken clouds":
-                imageResource = R.drawable.foggy_medium;
+            case "broken mClouds":
+                imageResource = R.drawable.drawable_foggy_medium;
                 break;
-            case "scattered clouds":
-            case "few clouds":
-                imageResource = R.drawable.foggy_minimum;
+            case "scattered mClouds":
+            case "few mClouds":
+                imageResource = R.drawable.drawable_foggy_minimum;
                 break;
             case "clear sky":
             case "sky is clear":
-                imageResource = R.drawable.sunny;
+                imageResource = R.drawable.drawable_sunny;
                 break;
             default:
-                imageResource = R.drawable.unknown;
+                imageResource = R.drawable.drawable_unknown;
         }
         return imageResource;
     }
 
+
     //creates xmlParser and gets data in xml format
-    protected XmlPullParser registerXMLParser(String urlBegin, String city, String urlEnd) {
+    XmlPullParser registerXMLParser(String urlBegin, String city, String urlEnd) {
         try {
             URL url = new URL(urlBegin + city + urlEnd);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -150,54 +119,54 @@ public abstract class BaseFragment extends Fragment {
     }
 
 
-    protected abstract void getDataFromXML(final String city);
+    abstract void getDataFromXML(final String city);
 
 
     public int getHumidity() {
-        return humidity;
+        return mHumidity;
     }
 
     public void setHumidity(int humidity) {
-        this.humidity = humidity;
+        this.mHumidity = humidity;
     }
 
     public int getClouds() {
-        return clouds;
+        return mClouds;
     }
 
     public void setClouds(int clouds) {
-        this.clouds = clouds;
+        this.mClouds = clouds;
     }
 
     public double getTemp() {
-        return temp;
+        return mTemp;
     }
 
     public void setTemp(double temp) {
-        this.temp = temp;
+        this.mTemp = temp;
     }
 
     public double getPressure() {
-        return pressure;
+        return mPressure;
     }
 
     public void setPressure(double pressure) {
-        this.pressure = pressure;
+        this.mPressure = pressure;
     }
 
     public double getSpeed() {
-        return speed;
+        return mSpeed;
     }
 
     public void setSpeed(double speed) {
-        this.speed = speed;
+        this.mSpeed = speed;
     }
 
     public double getDirection() {
-        return direction;
+        return mDirection;
     }
 
     public void setDirection(double direction) {
-        this.direction = direction;
+        this.mDirection = direction;
     }
 }

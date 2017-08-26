@@ -15,10 +15,10 @@ import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-    protected List<WeatherParameters> weatherList;
+    List<WeatherParameters> weatherList;
 
 
-    public RecyclerAdapter(List<WeatherParameters> stringList) {
+    RecyclerAdapter(List<WeatherParameters> stringList) {
         weatherList = stringList;
     }
 
@@ -27,7 +27,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_items_5_and_16_days_layout, parent, false);
+                .inflate(R.layout.view_recycler_items_5_and_16_days_layout, parent, false);
 
         return new RecyclerAdapter.ViewHolder(view);
     }
@@ -47,7 +47,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-
         return weatherList.size();
     }
 
@@ -55,12 +54,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView timeTextView;
-        public ImageView forecastImageView;
-        public TextView tempTextView;
-        public TextView weatherDataTextView;
+        private TextView timeTextView;
+        private ImageView forecastImageView;
+        private TextView tempTextView;
+        private TextView weatherDataTextView;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             timeTextView = itemView.findViewById(R.id.text_view_time);
             forecastImageView = itemView.findViewById(R.id.image_view_forecast);

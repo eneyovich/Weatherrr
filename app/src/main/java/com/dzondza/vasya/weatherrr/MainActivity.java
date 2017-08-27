@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         View navigButtonView = mNavigationView.getMenu().findItem(R.id.nav_city_button).getActionView();
-        Button cityButton = navigButtonView.findViewById(R.id.city_button_id);
+        Button cityButton = navigButtonView.findViewById(R.id.button_city);
         cityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             args.putString(CITY_DIALOG_KEY, mDialogCityText);
             mFragment.setArguments(args);
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, mFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_activity_main, mFragment).commit();
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                EditText cityEditText = mDialogView.findViewById(R.id.city_edit_text_id);
+                EditText cityEditText = mDialogView.findViewById(R.id.edit_text_city);
                 mDialogCityText = cityEditText.getText().toString();
                 mToolbar.setTitle(mDialogCityText.toUpperCase());
 

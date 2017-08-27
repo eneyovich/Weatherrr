@@ -25,13 +25,13 @@
             android:weightSum="1">
 
             <TextView
-                android:id="@+id/text_view_today_time"
+                android:id="@+id/text_today_time"
                 android:layout_weight="0.34"
                 android:textSize="18sp"
                 style="@style/MyTodayInsideUpperCardViewStyle"/>
 
             <ImageView
-                android:id="@+id/today_image_view"
+                android:id="@+id/image_today"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.32"
@@ -40,7 +40,7 @@
                 android:contentDescription="@string/image_descript"/>
 
             <TextView
-                android:id="@+id/text_view_today_temp"
+                android:id="@+id/text_today_temp"
                 android:layout_weight="0.34"
                 android:textSize="22sp"
                 style="@style/MyTodayInsideUpperCardViewStyle"/>
@@ -59,7 +59,7 @@
         app:cardBackgroundColor="#00000000">
 
         <LinearLayout
-            android:id="@+id/linear_layout_forecast"
+            android:id="@+id/linear_layout_forecast_today"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -67,23 +67,23 @@
             android:layout_marginTop="35dp">
 
             <TextView
-                android:id="@+id/text_view_today_pressure"
+                android:id="@+id/text_today_pressure"
                 style="@style/MyTodayInsideLowerCardViewStyle"/>
 
             <TextView
-                android:id="@+id/text_view_today_humidity"
+                android:id="@+id/text_today_humidity"
                 style="@style/MyTodayInsideLowerCardViewStyle"/>
 
             <TextView
-                android:id="@+id/text_view_today_speed"
+                android:id="@+id/text_today_speed"
                 style="@style/MyTodayInsideLowerCardViewStyle"/>
 
             <TextView
-                android:id="@+id/text_view_today_direction"
+                android:id="@+id/text_today_direction"
                 style="@style/MyTodayInsideLowerCardViewStyle"/>
 
             <TextView
-                android:id="@+id/text_view_today_clouds"
+                android:id="@+id/text_today_clouds"
                 style="@style/MyTodayInsideLowerCardViewStyle"/>
 
         </LinearLayout>

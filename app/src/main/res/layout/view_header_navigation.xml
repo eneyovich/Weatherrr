@@ -8,7 +8,7 @@
     android:background="@drawable/drawable_header_navigation">
 
     <TextView
-        android:id="@+id/header_textView_upper"
+        android:id="@+id/text_navigation_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="18dp"

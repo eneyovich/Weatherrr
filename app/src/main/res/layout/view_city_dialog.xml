@@ -2,15 +2,15 @@
 <!--editText to put in a city name for forcast-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_city_text_view"
         android:fontFamily="cursive"
+        android:text="@string/dialog_city_text_view"
         android:textStyle="bold|italic"/>
 
     <EditText

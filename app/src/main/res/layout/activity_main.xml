@@ -6,8 +6,8 @@
     android:id="@+id/drawer_layout"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:openDrawer="start"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
 
     <FrameLayout
@@ -31,8 +31,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:theme="@style/MyNavigationViewStyle"
         app:headerLayout="@layout/view_header_navigation"
-        app:menu="@menu/menu_drawer"/>
+        app:menu="@menu/menu_drawer"
+        app:theme="@style/MyNavigationViewStyle"/>
 
 </android.support.v4.widget.DrawerLayout>

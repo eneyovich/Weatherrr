@@ -4,7 +4,7 @@
     android:id="@+id/button_city"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/dialog_city_text_view"
     android:fontFamily="casual"
+    android:text="@string/dialog_city_text_view"
     android:textStyle="italic|bold"
     android:background="#64B5F6"/>

@@ -8,7 +8,7 @@
 
     <TextView
         android:layout_weight="0.27"
-        android:id="@+id/text_view_time"
+        android:id="@+id/text_time_5_16_days"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
@@ -18,7 +18,7 @@
         android:textColor="@android:color/black"/>
 
     <ImageView
-        android:id="@+id/image_view_forecast"
+        android:id="@+id/image_5_16_days_forecast"
         android:layout_weight="0.31"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -34,7 +34,7 @@
 
 
         <TextView
-            android:id="@+id/text_view_temp"
+            android:id="@+id/text_temp_5_16_days"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -42,7 +42,7 @@
             android:textColor="@android:color/black"/>
 
         <TextView
-            android:id="@+id/text_view_weather_data"
+            android:id="@+id/text_5_16_days_weather_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"

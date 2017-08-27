@@ -14,7 +14,7 @@
         android:textStyle="bold|italic"/>
 
     <EditText
-        android:id="@+id/city_edit_text_id"
+        android:id="@+id/edit_text_city"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"

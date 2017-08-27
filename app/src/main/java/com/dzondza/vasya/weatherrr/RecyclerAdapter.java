@@ -60,10 +60,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         ViewHolder(View itemView) {
             super(itemView);
-            timeTextView = itemView.findViewById(R.id.text_view_time);
-            forecastImageView = itemView.findViewById(R.id.image_view_forecast);
-            tempTextView = itemView.findViewById(R.id.text_view_temp);
-            weatherDataTextView = itemView.findViewById(R.id.text_view_weather_data);
+            timeTextView = itemView.findViewById(R.id.text_time_5_16_days);
+            forecastImageView = itemView.findViewById(R.id.image_5_16_days_forecast);
+            tempTextView = itemView.findViewById(R.id.text_temp_5_16_days);
+            weatherDataTextView = itemView.findViewById(R.id.text_5_16_days_weather_data);
         }
     }
 }

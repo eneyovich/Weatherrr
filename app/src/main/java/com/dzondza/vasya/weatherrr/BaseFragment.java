@@ -15,22 +15,22 @@ import java.util.List;
 
 public abstract class BaseFragment extends Fragment {
 
-    private int humidity, clouds;
-    private double temp, minTemp, maxTemp, pressure, speed, direction;
-    private String descript;
-    RecyclerAdapter recyclerAdapter;
-    List<WeatherParameters> forecastRecyclerList;
+    private int mHumidity, mClouds;
+    private double mTemp, mMinTemp, mMaxTemp, mPressure, mSpeed, mDirection;
+    private String mDescript;
+    RecyclerAdapter mRecyclerAdapter;
+    List<WeatherParameters> mForecastRecyclerList;
 
 
-    protected void initializeRecycler (View view){
-        forecastRecyclerList = new ArrayList<>();
+    void initializeRecycler (View view){
+        mForecastRecyclerList = new ArrayList<>();
 
         RecyclerView mRecyclerView = view.findViewById(R.id.recycler_id);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(manager);
 
-        recyclerAdapter = new RecyclerAdapter(forecastRecyclerList);
-        mRecyclerView.setAdapter(recyclerAdapter);
+        mRecyclerAdapter = new RecyclerAdapter(mForecastRecyclerList);
+        mRecyclerView.setAdapter(mRecyclerAdapter);
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(),
                 manager.getOrientation()));
@@ -40,119 +40,119 @@ public abstract class BaseFragment extends Fragment {
 
 
     //sets weather params in texView in 5 & 16 days fragments
-    protected String weatherParamsInTextView() {
-        return "pressure " + pressure + " hPa\nhumidity " + humidity + " %\nspeed " + speed
-                + " m/s\nclouds " + clouds + " %\ndirection " + direction + " deg";
+    String weatherParamsInTextView() {
+        return "mPressure " + mPressure + " hPa\nmHumidity " + mHumidity + " %\nmSpeed " + mSpeed
+                + " m/s\nmClouds " + mClouds + " %\nmDirection " + mDirection + " deg";
     }
 
 
-    //chooses image resource id to descript forecast
-    protected int getImage(String weatherDescript) {
+    //returns image resource id according to weather description
+    int getImage(String weatherDescript) {
         int imageResource;
         switch (weatherDescript) {
             case "light rain":
             case "light intensity shower rain":
-                imageResource = R.drawable.raining_little;
+                imageResource = R.drawable.drawable_raining_little;
                 break;
-            case "overcast clouds":
+            case "overcast mClouds":
             case "haze":
-                imageResource = R.drawable.foggy_much;
+                imageResource = R.drawable.drawable_foggy_much;
                 break;
             case "moderate rain":
             case "heavy intensity rain":
             case "shower rain":
-                imageResource = R.drawable.raining_medium;
+                imageResource = R.drawable.drawable_raining_medium;
                 break;
-            case "broken clouds":
-                imageResource = R.drawable.foggy_medium;
+            case "broken mClouds":
+                imageResource = R.drawable.drawable_foggy_medium;
                 break;
-            case "scattered clouds":
-            case "few clouds":
-                imageResource = R.drawable.foggy_minimum;
+            case "scattered mClouds":
+            case "few mClouds":
+                imageResource = R.drawable.drawable_foggy_minimum;
                 break;
             case "clear sky":
             case "sky is clear":
-                imageResource = R.drawable.sunny;
+                imageResource = R.drawable.drawable_sunny;
                 break;
             default:
-                imageResource = R.drawable.unknown;
+                imageResource = R.drawable.drawable_unknown;
         }
         return imageResource;
     }
 
 
-    protected abstract void getJSON(final String city);
+    abstract void getJSON(final String city);
 
 
     public int getHumidity() {
-        return humidity;
+        return mHumidity;
     }
 
     public void setHumidity(int humidity) {
-        this.humidity = humidity;
+        this.mHumidity = humidity;
     }
 
     public int getClouds() {
-        return clouds;
+        return mClouds;
     }
 
     public void setClouds(int clouds) {
-        this.clouds = clouds;
+        this.mClouds = clouds;
     }
 
     public double getTemp() {
-        return temp;
+        return mTemp;
     }
 
     public void setTemp(double temp) {
-        this.temp = temp;
+        this.mTemp = temp;
     }
 
     public double getMinTemp() {
-        return minTemp;
+        return mMinTemp;
     }
 
     public void setMinTemp(double minTemp) {
-        this.minTemp = minTemp;
+        this.mMinTemp = minTemp;
     }
 
     public double getMaxTemp() {
-        return maxTemp;
+        return mMaxTemp;
     }
 
     public void setMaxTemp(double maxTemp) {
-        this.maxTemp = maxTemp;
+        this.mMaxTemp = maxTemp;
     }
 
     public double getPressure() {
-        return pressure;
+        return mPressure;
     }
 
     public void setPressure(double pressure) {
-        this.pressure = pressure;
+        this.mPressure = pressure;
     }
 
     public double getSpeed() {
-        return speed;
+        return mSpeed;
     }
 
     public void setSpeed(double speed) {
-        this.speed = speed;
+        this.mSpeed = speed;
     }
 
     public double getDirection() {
-        return direction;
+        return mDirection;
     }
 
     public void setDirection(double direction) {
-        this.direction = direction;
+        this.mDirection = direction;
     }
 
     public String getDescript() {
-        return descript;
+        return mDescript;
     }
 
     public void setDescript(String descript) {
-        this.descript = descript;
+        this.mDescript = descript;
     }
 }

@@ -2,7 +2,7 @@ package com.dzondza.vasya.weatherrr;
 
 
 /**
- * parameters in recyclerView item
+ * parameters in recyclerView's item
  */
 
 public class WeatherParameters {

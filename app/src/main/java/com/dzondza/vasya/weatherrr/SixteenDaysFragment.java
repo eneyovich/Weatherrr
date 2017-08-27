@@ -23,7 +23,7 @@ public class SixteenDaysFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recycler_view_layout, container, false);
+        View view = inflater.inflate(R.layout.view_recycler_view_layout, container, false);
 
         String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
         getJSON(cityName);
@@ -35,7 +35,7 @@ public class SixteenDaysFragment extends BaseFragment {
 
 
     @Override
-    protected void getJSON(final String city) {
+    void getJSON(final String city) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -80,10 +80,10 @@ public class SixteenDaysFragment extends BaseFragment {
                     int imgResource = getImage(getDescript());
 
 
-                    forecastRecyclerList.add(new WeatherParameters(date, imgResource, new StringBuilder()
+                    mForecastRecyclerList.add(new WeatherParameters(date, imgResource, new StringBuilder()
                             .append(getMinTemp()).append("/").append(getMaxTemp()).append(" \u00B0C")
                             .toString(), weatherParamsInTextView()));
-                    recyclerAdapter.notifyDataSetChanged();
+                    mRecyclerAdapter.notifyDataSetChanged();
                 }
             }
         }.execute();

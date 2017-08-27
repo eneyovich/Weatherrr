@@ -32,7 +32,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:theme="@style/MyNavigationViewStyle"
-        app:headerLayout="@layout/header_navigation"
-        app:menu="@menu/drawer_menu"/>
+        app:headerLayout="@layout/view_header_navigation"
+        app:menu="@menu/menu_drawer"/>
 
 </android.support.v4.widget.DrawerLayout>

@@ -14,7 +14,7 @@ import java.util.Calendar;
 
 
 /**
- * shows today forecast
+ * shows today's forecast
  */
 
 public class TodayFragment extends BaseFragment {
@@ -30,7 +30,7 @@ public class TodayFragment extends BaseFragment {
 
 
     @Override
-    protected void getJSON(final String city) {
+    void getJSON(final String city) {
 
         new AsyncTask<Void, Void, Void>() {
 

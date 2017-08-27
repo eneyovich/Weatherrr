@@ -2,21 +2,21 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
+    android:orientation="vertical"
     android:weightSum="1"
     android:background="@drawable/drawable_background">
 
 
     <android.support.v7.widget.CardView
-        style="@style/MyTodayCardViewStyle"
         android:layout_weight="0.3"
         app:cardCornerRadius="4dp"
         app:cardElevation="5dp"
         app:contentPadding="10dp"
-        app:cardBackgroundColor="#00000000">
+        app:cardBackgroundColor="#00000000"
+        style="@style/MyTodayCardViewStyle">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,20 +51,20 @@
 
 
     <android.support.v7.widget.CardView
-        style="@style/MyTodayCardViewStyle"
         android:layout_weight="0.7"
         app:cardElevation="5dp"
         app:cardCornerRadius="4dp"
         app:contentPadding="20dp"
-        app:cardBackgroundColor="#00000000">
+        app:cardBackgroundColor="#00000000"
+        style="@style/MyTodayCardViewStyle">
 
         <LinearLayout
             android:id="@+id/linear_layout_forecast_today"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="35dp">
+            android:layout_marginTop="35dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/text_today_pressure"

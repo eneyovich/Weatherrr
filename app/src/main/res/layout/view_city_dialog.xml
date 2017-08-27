@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_city_text_view"
         android:fontFamily="cursive"
-        android:textStyle="bold|italic"/>
+        android:textStyle="bold|italic"
+        android:text="@string/dialog_city_text_view"/>
 
     <EditText
         android:id="@+id/edit_text_city"

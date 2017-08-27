@@ -31,7 +31,7 @@ public abstract class BaseFragment extends Fragment {
     protected void initializeRecycler (View view){
         mForecastRecyclerList = new ArrayList<>();
 
-        RecyclerView mRecyclerView = view.findViewById(R.id.recycler_id);
+        RecyclerView mRecyclerView = view.findViewById(R.id.my_recycler_view);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(manager);
 
@@ -91,7 +91,7 @@ public abstract class BaseFragment extends Fragment {
             case "light intensity shower rain":
                 imageResource = R.drawable.drawable_rain_little;
                 break;
-            case "overcast mClouds":
+            case "overcast clouds":
             case "haze":
                 imageResource = R.drawable.drawable_foggy_much;
                 break;
@@ -100,11 +100,11 @@ public abstract class BaseFragment extends Fragment {
             case "shower rain":
                 imageResource = R.drawable.drawable_raining_medium;
                 break;
-            case "broken mClouds":
+            case "broken clouds":
                 imageResource = R.drawable.drawable_foggy_medium;
                 break;
-            case "scattered mClouds":
-            case "few mClouds":
+            case "scattered clouds":
+            case "few clouds":
                 imageResource = R.drawable.drawable_foggy_minimum;
                 break;
             case "clear sky":

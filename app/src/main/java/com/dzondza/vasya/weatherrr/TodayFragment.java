@@ -59,18 +59,18 @@ public class TodayFragment extends BaseFragment {
                     String weatherDescript = weatherJson.getString("description");
 
 
-                    setToTextView(R.id.text_view_today_time, Calendar.getInstance().getTime().toString());
+                    setToTextView(R.id.text_today_time, Calendar.getInstance().getTime().toString());
 
-                    ImageView forecastImage = getView().findViewById(R.id.today_image_view);
+                    ImageView forecastImage = getView().findViewById(R.id.image_today);
                     int imgResource = getImage(weatherDescript);
                     forecastImage.setImageResource(imgResource);
 
-                    setToTextView(R.id.text_view_today_temp, "" + getTemp() + " \u00B0C " + weatherDescript);
-                    setToTextView(R.id.text_view_today_pressure, "Pressure           " + getPressure() + " hPa");
-                    setToTextView(R.id.text_view_today_humidity, "Humidity          " + getHumidity() + " %");
-                    setToTextView(R.id.text_view_today_speed, "Speed              " + getSpeed() + " m/s");
-                    setToTextView(R.id.text_view_today_direction, "Direction          " + getDirection() + " deg");
-                    setToTextView(R.id.text_view_today_clouds, "Clouds             " + getClouds() + " %");
+                    setToTextView(R.id.text_today_temp, "" + getTemp() + " \u00B0C " + weatherDescript);
+                    setToTextView(R.id.text_today_pressure, "Pressure           " + getPressure() + " hPa");
+                    setToTextView(R.id.text_today_humidity, "Humidity          " + getHumidity() + " %");
+                    setToTextView(R.id.text_today_speed, "Speed              " + getSpeed() + " m/s");
+                    setToTextView(R.id.text_today_direction, "Direction          " + getDirection() + " deg");
+                    setToTextView(R.id.text_today_clouds, "Clouds             " + getClouds() + " %");
 
                 } catch (JSONException e) {
                     Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();

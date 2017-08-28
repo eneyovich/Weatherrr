@@ -61,7 +61,7 @@ public class TodayFragment extends BaseFragment {
 
                     setToTextView(R.id.text_today_time, Calendar.getInstance().getTime().toString());
 
-                    ImageView forecastImage = getView().findViewById(R.id.image_today);
+                    ImageView forecastImage = (ImageView) getView().findViewById(R.id.image_today);
                     int imgResource = getImage(weatherDescript);
                     forecastImage.setImageResource(imgResource);
 
@@ -82,7 +82,7 @@ public class TodayFragment extends BaseFragment {
 
     //sets value to textView
     private void setToTextView(int textViewId, String information) {
-        TextView tView = getView().findViewById(textViewId);
+        TextView tView = (TextView) getView().findViewById(textViewId);
         tView.setText(information);
     }
 }

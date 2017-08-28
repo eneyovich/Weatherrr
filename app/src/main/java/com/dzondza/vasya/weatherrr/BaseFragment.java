@@ -28,7 +28,7 @@ public abstract class BaseFragment extends Fragment {
     List<WeatherParameters> mForecastRecyclerList;
 
 
-    protected void initializeRecycler (View view){
+    void initializeRecycler (View view){
         mForecastRecyclerList = new ArrayList<>();
 
         RecyclerView mRecyclerView = view.findViewById(R.id.my_recycler_view);

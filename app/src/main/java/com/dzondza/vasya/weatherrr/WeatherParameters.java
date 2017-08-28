@@ -5,7 +5,7 @@ package com.dzondza.vasya.weatherrr;
  * RecyclerView Item content
  */
 
-public class WeatherParameters {
+class WeatherParameters {
     String weatherDate;
     int imageResource;
     String temper;

@@ -13,9 +13,9 @@ import java.util.List;
  * RecyclerView adapter for lists in 5- and 16- days fragments;
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-    List<WeatherParameters> weatherList;
+    private List<WeatherParameters> weatherList;
 
 
     RecyclerAdapter(List<WeatherParameters> stringList) {

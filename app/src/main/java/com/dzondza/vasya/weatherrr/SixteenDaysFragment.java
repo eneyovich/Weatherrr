@@ -37,7 +37,7 @@ public class SixteenDaysFragment extends BaseFragment {
 
 
     @Override
-    protected void getDataFromXML(final String city) {
+    void getDataFromXML(final String city) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {

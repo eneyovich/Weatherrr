@@ -13,9 +13,9 @@ import java.util.List;
  * RecyclerView adapter for lists in 5- and 16- days fragments;
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-    List<WeatherParameters> weatherList;
+    private List<WeatherParameters> weatherList;
 
     RecyclerAdapter(List<WeatherParameters> stringList) {
         weatherList = stringList;
@@ -32,7 +32,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
 
-
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
@@ -43,7 +42,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
 
-
     @Override
     public int getItemCount() {
         return weatherList.size();
@@ -51,7 +49,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView timeTextView;
         ImageView forecastImageView;

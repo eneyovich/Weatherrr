@@ -18,7 +18,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-
+/**
+ * creates drawerLayout, toolbar, Dialog view
+ */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Fragment mFragment;
     private DrawerLayout mDrawerLayout;

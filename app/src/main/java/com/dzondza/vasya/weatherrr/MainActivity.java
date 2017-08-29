@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 /**
- * Main activity creates mDrawerLayout, mToolbar
+ * Main activity creates drawerLayout, toolbar
  */
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String mDialogCityText;
     private View mDialogView;
     private Toolbar mToolbar;
-    public static final String CITY_DIALOG_KEY = "KEY";
     private NavigationView mNavigationView;
+    public static final String CITY_DIALOG_KEY = "KEY";
 
 
     @Override

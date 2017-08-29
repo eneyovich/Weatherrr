@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String mDialogCityText;
     private View mDialogView;
     private Toolbar mToolbar;
-    public static final String CITY_DIALOG_KEY = "KEY";
     private NavigationView mNavigationView;
+    public static final String CITY_DIALOG_KEY = "KEY";
 
 
     @Override

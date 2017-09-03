@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import org.json.JSONObject;
@@ -68,7 +69,7 @@ public abstract class BaseFragment extends Fragment {
             JSONObject jsonObj = new JSONObject(buffer.toString());
 
             if (jsonObj.getInt("cod") != 200) {
-                Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
+                Log.i("COD_ERROR", getString(R.string.loading_error));
             }
             reader.close();
 

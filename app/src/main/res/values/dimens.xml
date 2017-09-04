@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_main_toolbar_elevation">4dp</dimen>
+
+    <dimen name="card_view_elevation_radius">5dp</dimen>
+
+    <dimen name="today_time_text_size">18sp</dimen>
+    <dimen name="today_temp_text_size">22sp</dimen>
+    <dimen name="today_image_padding_end">15dp</dimen>
+
+    <dimen name="navigation_header_layout_height">180dp</dimen>
+    <dimen name="navigation_header_text_size">24sp</dimen>
+    <dimen name="navigation_header_padding">18dp</dimen>
+    
+    <dimen name="item_5_16_text_time_margin_start">2dp</dimen>
+    <dimen name="item_5_16_text_time_size">18sp</dimen>
+    <dimen name="item_5_16_image_padding_end">10dp</dimen>
+    <dimen name="item_5_16_text_temp_margin_top">12dp</dimen>
+    <dimen name="item_5_16_text_temp_size">15sp</dimen>
+    <dimen name="item_5_16_text_weather_data_size">12sp</dimen>
+    <dimen name="item_5_16_text_weather_data_margin_top">24dp</dimen>
+
+    <dimen name="recycler_view_margin_top">65dp</dimen>
+    <dimen name="recycler_view_margins">15dp</dimen>
+    <dimen name="recycler_view_content_padding">10dp</dimen>
+</resources>

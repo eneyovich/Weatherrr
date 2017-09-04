@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -25,7 +24,7 @@ public class SixteenDaysFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.view_recycler_view_layout, container, false);
 
-        String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
+        String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY);
         getJSON(cityName);
 
         initializeRecycler(view);
@@ -35,18 +34,16 @@ public class SixteenDaysFragment extends BaseFragment {
 
 
     @Override
-    void getJSON(final String city) {
+    protected void getJSON(final String city) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
-                    URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=" +
-                            city + "&units=metric&cnt=16&APPID=419b4a7ba318ef5286319f89b37ed373");
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    HttpURLConnection connection = connect("http://api.openweathermap.org/data/2.5/forecast/daily?q=",
+                            city, "&units=metric&cnt=16&APPID=419b4a7ba318ef5286319f89b37ed373");
                     BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-                    Gson gson = new Gson();
-                    gsonData = gson.fromJson(reader, GsonStructure.class);
+                    gsonData = new Gson().fromJson(reader, GsonStructure.class);
 
                     reader.close();
                     connection.disconnect();
@@ -63,25 +60,25 @@ public class SixteenDaysFragment extends BaseFragment {
 
                 for (int i = 0; i < gsonData.list.length; i++) {
 
-                    setMinTemp(gsonData.list[i].temp.min);
-                    setMaxTemp(gsonData.list[i].temp.max);
-                    setPressure(gsonData.list[i].pressure);
-                    setHumidity(gsonData.list[i].humidity);
-                    setSpeed(gsonData.list[i].speed);
-                    setClouds(gsonData.list[i].clouds);
-                    setDirection(gsonData.list[i].deg);
+                    mMinTemp = gsonData.list[i].temp.min;
+                    mMaxTemp = gsonData.list[i].temp.max;
+                    mPressure = gsonData.list[i].pressure;
+                    mHumidity = gsonData.list[i].humidity;
+                    mSpeed = gsonData.list[i].speed;
+                    mClouds = gsonData.list[i].clouds;
+                    mDirection = gsonData.list[i].deg;
 
                     Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.DAY_OF_YEAR, i);
                     SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd y");
                     String date = sdf.format(calendar.getTime());
 
-                    setDescript(gsonData.list[i].weather[0].description);
-                    int imgResource = getImage(getDescript());
+                    mDescript = gsonData.list[i].weather[0].description;
+                    int imgResource = getImage(mDescript);
 
 
                     mForecastRecyclerList.add(new WeatherParameters(date, imgResource, new StringBuilder()
-                            .append(getMinTemp()).append("/").append(getMaxTemp()).append(" \u00B0C")
+                            .append(mMinTemp).append("/").append(mMaxTemp).append(" \u00B0C")
                             .toString(), weatherParamsInTextView()));
                     mRecyclerAdapter.notifyDataSetChanged();
                 }

@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,7 +24,7 @@ public class FiveDaysFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.view_recycler_view_layout, container, false);
 
-        String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
+        String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY);
         getJSON(cityName);
 
         initializeRecycler(view);
@@ -35,18 +34,16 @@ public class FiveDaysFragment extends BaseFragment {
 
 
     @Override
-    void getJSON(final String city) {
+    protected void getJSON(final String city) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
-                    URL url = new URL("http://api.openweathermap.org/data/2.5/forecast?q=" + city
-                            + "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    HttpURLConnection connection = connect("http://api.openweathermap.org/data/2.5/forecast?q=",
+                            city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
                     BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-                    Gson gson = new Gson();
-                    gsonData = gson.fromJson(reader, GsonStructure.class);
+                    gsonData = new Gson().fromJson(reader, GsonStructure.class);
 
                     reader.close();
                     connection.disconnect();
@@ -67,19 +64,19 @@ public class FiveDaysFragment extends BaseFragment {
                     calendar.add(Calendar.HOUR_OF_DAY, i*3);
                     Date time = calendar.getTime();
 
-                    setTemp(gsonData.list[i].main.temp);
-                    setPressure(gsonData.list[i].main.pressure);
-                    setHumidity(gsonData.list[i].main.humidity);
-                    setDirection(gsonData.list[i].wind.deg);
-                    setSpeed(gsonData.list[i].wind.speed);
-                    setClouds(gsonData.list[i].clouds.all);
+                    mTemp = gsonData.list[i].main.temp;
+                    mPressure = gsonData.list[i].main.pressure;
+                    mHumidity = gsonData.list[i].main.humidity;
+                    mDirection = gsonData.list[i].wind.deg;
+                    mSpeed = gsonData.list[i].wind.speed;
+                    mClouds = gsonData.list[i].clouds.all;
 
-                    setDescript(gsonData.list[i].weather[0].description);
-                    int imgResource = getImage(getDescript());
+                    mDescript = gsonData.list[i].weather[0].description;
+                    int imgResource = getImage(mDescript);
 
 
                     mForecastRecyclerList.add(new WeatherParameters(time.toString(), imgResource,
-                            getTemp() + " \u00B0C", weatherParamsInTextView()));
+                            mTemp + " \u00B0C", weatherParamsInTextView()));
                     mRecyclerAdapter.notifyDataSetChanged();
                 }
             }

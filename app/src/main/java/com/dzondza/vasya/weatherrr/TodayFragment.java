@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Calendar;
 
 
@@ -25,7 +24,7 @@ public class TodayFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_today_layout, container, false);
 
-        String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
+        String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY);
         getJSON(cityName);
 
         return view;
@@ -33,20 +32,16 @@ public class TodayFragment extends BaseFragment {
 
 
     @Override
-    void getJSON(final String city) {
+    protected void getJSON(final String city) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-
                 try {
-                    URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + city +
-                            "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
+                    HttpURLConnection connection = connect("http://api.openweathermap.org/data/2.5/weather?q=",
+                            city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
                     BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-                    Gson gson = new Gson();
-                    gsonData = gson.fromJson(reader, GsonStructure.class);
+                    gsonData = new Gson().fromJson(reader, GsonStructure.class);
 
                     reader.close();
                     connection.disconnect();
@@ -61,27 +56,27 @@ public class TodayFragment extends BaseFragment {
             @Override
             protected void onPostExecute(Void aVoid) {
 
-                setDescript(gsonData.weather[0].description);
-                setTemp(gsonData.main.temp);
-                setPressure(gsonData.main.pressure);
-                setHumidity(gsonData.main.humidity);
-                setSpeed(gsonData.wind.speed);
-                setDirection(gsonData.wind.deg);
-                setClouds(gsonData.clouds.all);
+                mDescript = gsonData.weather[0].description;
+                mTemp = gsonData.main.temp;
+                mPressure = gsonData.main.pressure;
+                mHumidity = gsonData.main.humidity;
+                mSpeed = gsonData.wind.speed;
+                mDirection = gsonData.wind.deg;
+                mClouds = gsonData.clouds.all;
 
 
                 setToTextView(R.id.text_today_time, Calendar.getInstance().getTime().toString());
 
                 ImageView forecastImage = (ImageView) getView().findViewById(R.id.image_today);
-                int imgResource = getImage(getDescript());
+                int imgResource = getImage(mDescript);
                 forecastImage.setImageResource(imgResource);
 
-                setToTextView(R.id.text_today_temp, "" + getTemp() + " \u00B0C " + getDescript());
-                setToTextView(R.id.text_today_pressure, "Pressure           " + getPressure() + " hPa");
-                setToTextView(R.id.text_today_humidity, "Humidity          " + getHumidity() + " %");
-                setToTextView(R.id.text_today_speed, "Speed              " + getSpeed() + " m/s");
-                setToTextView(R.id.text_today_direction, "Direction          " + getDirection() + " deg");
-                setToTextView(R.id.text_today_clouds, "Clouds             " + getClouds() + " %");
+                setToTextView(R.id.text_today_temp, "" + mTemp + " \u00B0C " + mDescript);
+                setToTextView(R.id.text_today_pressure, "Pressure           " + mPressure + " hPa");
+                setToTextView(R.id.text_today_humidity, "Humidity          " + mHumidity + " %");
+                setToTextView(R.id.text_today_speed, "Speed              " + mSpeed + " m/s");
+                setToTextView(R.id.text_today_direction, "Direction          " + mDirection + " deg");
+                setToTextView(R.id.text_today_clouds, "Clouds             " + mClouds + " %");
             }
         }.execute();
     }

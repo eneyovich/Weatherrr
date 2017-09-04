@@ -34,7 +34,6 @@
         android:layout_weight="0.42"
         android:orientation="vertical">
 
-
         <TextView
             android:id="@+id/text_temp_5_16_days"
             android:layout_width="match_parent"

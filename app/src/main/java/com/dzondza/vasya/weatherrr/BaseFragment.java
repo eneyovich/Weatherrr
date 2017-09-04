@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,14 +21,14 @@ import java.util.List;
 
 public abstract class BaseFragment extends Fragment {
 
-    private JSONObject mBasicJson;
-    private int mHumidity, mClouds;
-    private double mTemp, mMinTemp, mMaxTemp, mPressure, mSpeed, mDirection;
-    RecyclerAdapter mRecyclerAdapter;
-    List<WeatherParameters> mForecastRecyclerList;
+    protected JSONObject mBasicJson;
+    protected int mHumidity, mClouds;
+    protected double mTemp, mMinTemp, mMaxTemp, mPressure, mSpeed, mDirection;
+    protected RecyclerAdapter mRecyclerAdapter;
+    protected List<WeatherParameters> mForecastRecyclerList;
 
 
-    void initializeRecycler (View view){
+    protected void initializeRecycler (View view){
         mForecastRecyclerList = new ArrayList<>();
 
         RecyclerView mRecyclerView = view.findViewById(R.id.my_recycler_view);
@@ -47,14 +46,14 @@ public abstract class BaseFragment extends Fragment {
 
 
     //sets weather parameters in texView in 5 & 16 days fragments
-    String weatherParamsInTextView() {
-        return "mPressure " + mPressure + " hPa\nmHumidity " + mHumidity + " %\nmSpeed " + mSpeed
-                + " m/s\nmClouds " + mClouds + " %\nmDirection " + mDirection + " deg";
+    protected String weatherParamsInTextView() {
+        return "Pressure " + mPressure + " hPa\nHumidity " + mHumidity + " %\nSpeed " + mSpeed
+                + " m/s\nClouds " + mClouds + " %\nDirection " + mDirection + " deg";
     }
 
 
     // opens HttpURLConnection and returns response in JSON format
-    JSONObject initializeBasicJson(String urlBeginning, String city, String urlEnd) {
+    protected JSONObject initializeBasicJson(String urlBeginning, String city, String urlEnd) {
         try {
             URL url = new URL(urlBeginning + city + urlEnd);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -85,7 +84,7 @@ public abstract class BaseFragment extends Fragment {
 
 
     //chooses image resource id to descript forecast
-    int getImage(String weatherDescript) {
+    protected int getImage(String weatherDescript) {
         int imageResource;
         switch (weatherDescript) {
             case "light rain":
@@ -119,78 +118,5 @@ public abstract class BaseFragment extends Fragment {
     }
 
 
-    abstract void getJSON(final String city);
-
-
-    public JSONObject getBasicJson() {
-        return mBasicJson;
-    }
-
-    public void setBasicJson(JSONObject basicJson) {
-        this.mBasicJson = basicJson;
-    }
-
-    public int getHumidity() {
-        return mHumidity;
-    }
-
-    public void setHumidity(int humidity) {
-        this.mHumidity = humidity;
-    }
-
-    public int getClouds() {
-        return mClouds;
-    }
-
-    public void setClouds(int clouds) {
-        this.mClouds = clouds;
-    }
-
-    public double getTemp() {
-        return mTemp;
-    }
-
-    public void setTemp(double temp) {
-        this.mTemp = temp;
-    }
-
-    public double getMinTemp() {
-        return mMinTemp;
-    }
-
-    public void setMinTemp(double minTemp) {
-        this.mMinTemp = minTemp;
-    }
-
-    public double getMaxTemp() {
-        return mMaxTemp;
-    }
-
-    public void setMaxTemp(double maxTemp) {
-        this.mMaxTemp = maxTemp;
-    }
-
-    public double getPressure() {
-        return mPressure;
-    }
-
-    public void setPressure(double pressure) {
-        this.mPressure = pressure;
-    }
-
-    public double getSpeed() {
-        return mSpeed;
-    }
-
-    public void setSpeed(double speed) {
-        this.mSpeed = speed;
-    }
-
-    public double getDirection() {
-        return mDirection;
-    }
-
-    public void setDirection(double direction) {
-        this.mDirection = direction;
-    }
+    protected abstract void getJSON(final String city);
 }

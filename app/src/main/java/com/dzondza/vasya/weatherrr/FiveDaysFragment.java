@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,14 +36,14 @@ public class FiveDaysFragment extends BaseFragment {
 
 
     @Override
-    void getJSON(final String city) {
+    protected void getJSON(final String city) {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(Void... voids) {
 
-                setBasicJson(initializeBasicJson("http://api.openweathermap.org/data/2.5/forecast?q=",
-                        city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373"));
+                mBasicJson = initializeBasicJson("http://api.openweathermap.org/data/2.5/forecast?q=",
+                        city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
 
                 return null;
             }
@@ -50,19 +51,19 @@ public class FiveDaysFragment extends BaseFragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 try {
-                    JSONArray allDaysJson = getBasicJson().getJSONArray("list");
+                    JSONArray allDaysJson = mBasicJson.getJSONArray("list");
                     for (int i = 0; i < allDaysJson.length(); i++) {
                         JSONObject oneDayJSON = allDaysJson.getJSONObject(i);
 
                         JSONObject mainJson = oneDayJSON.getJSONObject("main");
-                        setTemp(mainJson.getDouble("temp"));
-                        setPressure(mainJson.getDouble("pressure"));
-                        setHumidity(mainJson.getInt("humidity"));
+                        mTemp = mainJson.getDouble("temp");
+                        mPressure = mainJson.getDouble("pressure");
+                        mHumidity = mainJson.getInt("humidity");
 
                         JSONObject windJson = oneDayJSON.getJSONObject("wind");
-                        setDirection(windJson.getDouble("deg"));
-                        setSpeed(windJson.getDouble("speed"));
-                        setClouds(oneDayJSON.getJSONObject("clouds").getInt("all"));
+                        mDirection = windJson.getDouble("deg");
+                        mSpeed = windJson.getDouble("speed");
+                        mClouds = oneDayJSON.getJSONObject("clouds").getInt("all");
 
                         Calendar calendar = Calendar.getInstance();
                         calendar.add(Calendar.HOUR_OF_DAY, i*3);
@@ -74,11 +75,11 @@ public class FiveDaysFragment extends BaseFragment {
 
 
                         mForecastRecyclerList.add(new WeatherParameters(time.toString(), imgResource,
-                                getTemp() + " \u00B0C", weatherParamsInTextView()));
+                                mTemp + " \u00B0C", weatherParamsInTextView()));
 
                         mRecyclerAdapter.notifyDataSetChanged();
                     }
-                } catch (Exception e) {
+                } catch (JSONException e) {
                     Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
                 }
             }

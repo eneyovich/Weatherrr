@@ -28,7 +28,6 @@ public class FiveDaysFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.view_recycler_view_layout, container, false);
 
         String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
-
         getDataFromXML(cityName);
 
         initializeRecycler(view);
@@ -38,7 +37,7 @@ public class FiveDaysFragment extends BaseFragment {
 
 
     @Override
-    void getDataFromXML(final String city) {
+    protected void getDataFromXML(final String city) {
 
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -57,24 +56,22 @@ public class FiveDaysFragment extends BaseFragment {
                                     if (xmlParser.getAttributeName(1).equals("value")) {
                                         mTempList.add(Double.parseDouble(xmlParser.getAttributeValue(1)));
                                     }
-
+                                    break;
                                 case "pressure":
                                     if (xmlParser.getAttributeName(1).equals("value")) {
                                         mPressureList.add(Double.parseDouble(xmlParser.getAttributeValue(1)));
                                     }
                                     break;
-
                                 case "humidity":
                                     if (xmlParser.getAttributeName(0).equals("value")) {
                                         mHumidityList.add(Integer.parseInt(xmlParser.getAttributeValue(0)));
                                     }
-
+                                    break;
                                 case "windSpeed":
                                     if (xmlParser.getAttributeName(0).equals("mps")) {
                                         mSpeedList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
                                     }
                                     break;
-
                                 case "clouds":
                                     if (xmlParser.getAttributeName(1).equals("all")) {
                                         mCloudsList.add(Integer.parseInt(xmlParser.getAttributeValue(1)));
@@ -83,7 +80,6 @@ public class FiveDaysFragment extends BaseFragment {
                                         mWeatherList.add(xmlParser.getAttributeValue(0));
                                     }
                                     break;
-
                                 case "windDirection":
                                     if (xmlParser.getAttributeName(0).equals("deg")) {
                                         mDirectionList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
@@ -109,11 +105,11 @@ public class FiveDaysFragment extends BaseFragment {
                     Date time = calendar.getTime();
 
                     int imgResource = getImage(mWeatherList.get(i));
-                    setPressure(mPressureList.get(i));
-                    setHumidity(mHumidityList.get(i));
-                    setSpeed(mSpeedList.get(i));
-                    setClouds(mCloudsList.get(i));
-                    setDirection(mDirectionList.get(i));
+                    mPressure = mPressureList.get(i);
+                    mHumidity = mHumidityList.get(i);
+                    mSpeed = mSpeedList.get(i);
+                    mClouds = mCloudsList.get(i);
+                    mDirection = mDirectionList.get(i);
 
                     mForecastRecyclerList.add(new WeatherParameters(time.toString(), imgResource,
                             mTempList.get(i) + " \u00B0C", weatherParamsInTextView()));

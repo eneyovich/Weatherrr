@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.Calendar;
 
 
@@ -22,7 +25,6 @@ public class TodayFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_today_layout, container, false);
 
         String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
-
         getDataFromXML(cityName);
 
         return view;
@@ -30,7 +32,7 @@ public class TodayFragment extends BaseFragment {
 
 
     @Override
-    void getDataFromXML(final String city) {
+    protected void getDataFromXML(final String city) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -47,45 +49,42 @@ public class TodayFragment extends BaseFragment {
 
                                 case "temperature":
                                     if (xmlParser.getAttributeName(0).equals("value")) {
-                                        setTemp(Double.parseDouble(xmlParser.getAttributeValue(0)));
+                                        mTemp = Double.parseDouble(xmlParser.getAttributeValue(0));
                                     }
-
+                                    break;
                                 case "pressure":
                                     if (xmlParser.getAttributeName(0).equals("value")) {
-                                        setPressure(Double.parseDouble(xmlParser.getAttributeValue(0)));
+                                        mPressure = Double.parseDouble(xmlParser.getAttributeValue(0));
                                     }
                                     break;
-
                                 case "humidity":
                                     if (xmlParser.getAttributeName(0).equals("value")) {
-                                        setHumidity(Integer.parseInt(xmlParser.getAttributeValue(0)));
-                                    }
-
-                                case "speed":
-                                    if (xmlParser.getAttributeName(0).equals("value")) {
-                                        setSpeed(Double.parseDouble(xmlParser.getAttributeValue(0)));
+                                        mHumidity = Integer.parseInt(xmlParser.getAttributeValue(0));
                                     }
                                     break;
-
+                                case "speed":
+                                    if (xmlParser.getAttributeName(0).equals("value")) {
+                                        mSpeed = Double.parseDouble(xmlParser.getAttributeValue(0));
+                                    }
+                                    break;
                                 case "clouds":
                                     if (xmlParser.getAttributeName(1).equals("name")) {
                                         mWeatherList.add(xmlParser.getAttributeValue(1));
                                     }
                                     if (xmlParser.getAttributeName(0).equals("value")) {
-                                        setClouds(Integer.parseInt(xmlParser.getAttributeValue(0)));
+                                        mClouds = Integer.parseInt(xmlParser.getAttributeValue(0));
                                     }
                                     break;
-
                                 case "direction":
                                     if (xmlParser.getAttributeName(0).equals("value")) {
-                                        setDirection(Double.parseDouble(xmlParser.getAttributeValue(0)));
+                                        mDirection = Double.parseDouble(xmlParser.getAttributeValue(0));
                                     }
                                     break;
                             }
                         }
                         xmlParser.next();
                     }
-                } catch (Exception e) {
+                } catch (XmlPullParserException | IOException e) {
                     e.printStackTrace();
                 }
                 return null;
@@ -101,12 +100,12 @@ public class TodayFragment extends BaseFragment {
                     int imgResource = getImage(mWeatherList.get(0));
                     forecastImage.setImageResource(imgResource);
 
-                    setToTextView(R.id.text_today_temp, "" + getTemp() + " \u00B0C " + mWeatherList.get(0));
-                    setToTextView(R.id.text_today_pressure, "Pressure           " + getPressure() + " hPa");
-                    setToTextView(R.id.text_today_humidity, "Humidity          " + getHumidity() + " %");
-                    setToTextView(R.id.text_today_speed, "Speed              " + getSpeed() + " m/s");
-                    setToTextView(R.id.text_today_direction, "Direction          " + getDirection() + " deg");
-                    setToTextView(R.id.text_today_clouds, "Clouds             " + getClouds() + " %");
+                    setToTextView(R.id.text_today_temp, "" + mTemp + " \u00B0C " + mWeatherList.get(0));
+                    setToTextView(R.id.text_today_pressure, "Pressure           " + mPressure + " hPa");
+                    setToTextView(R.id.text_today_humidity, "Humidity          " + mHumidity + " %");
+                    setToTextView(R.id.text_today_speed, "Speed              " + mSpeed + " m/s");
+                    setToTextView(R.id.text_today_direction, "Direction          " + mDirection + " deg");
+                    setToTextView(R.id.text_today_clouds, "Clouds             " + mClouds + " %");
                 }catch (Exception e) {
                     Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
                 }

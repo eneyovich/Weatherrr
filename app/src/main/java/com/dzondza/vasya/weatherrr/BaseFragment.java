@@ -21,21 +21,21 @@ import java.util.List;
 
 public abstract class BaseFragment extends Fragment {
 
-    private int mHumidity, mClouds;
-    private double mTemp, mPressure, mSpeed, mDirection;
-    RecyclerAdapter mRecyclerAdapter;
-    List<WeatherParameters> mForecastRecyclerList;
+    protected int mHumidity, mClouds;
+    protected double mTemp, mPressure, mSpeed, mDirection;
+    protected RecyclerAdapter mRecyclerAdapter;
+    protected List<WeatherParameters> mForecastRecyclerList;
 
-    List<Double> mDirectionList = new ArrayList<>();
-    List<Integer> mHumidityList = new ArrayList<>();
-    List<Double> mSpeedList = new ArrayList<>();
-    List<Integer> mCloudsList = new ArrayList<>();
-    List<Double> mPressureList = new ArrayList<>();
-    List<String> mWeatherList = new ArrayList<>();
+    protected List<Double> mDirectionList = new ArrayList<>();
+    protected List<Integer> mHumidityList = new ArrayList<>();
+    protected List<Double> mSpeedList = new ArrayList<>();
+    protected List<Integer> mCloudsList = new ArrayList<>();
+    protected List<Double> mPressureList = new ArrayList<>();
+    protected List<String> mWeatherList = new ArrayList<>();
 
 
     //initializes recyclerViews
-    void initializeRecycler (View view){
+    protected void initializeRecycler (View view){
         mForecastRecyclerList = new ArrayList<>();
 
         RecyclerView mRecyclerView = view.findViewById(R.id.my_recycler_view);
@@ -53,14 +53,14 @@ public abstract class BaseFragment extends Fragment {
 
 
     //sets weather parameters in texView in 5 & 16 days fragments
-    String weatherParamsInTextView() {
-        return "mPressure " + mPressure + " hPa\nmHumidity " + mHumidity + " %\nmSpeed " + mSpeed
-                + " m/s\nmClouds " + mClouds + " %\nmDirection " + mDirection + " deg";
+    protected String weatherParamsInTextView() {
+        return "Pressure " + mPressure + " hPa\nHumidity " + mHumidity + " %\nSpeed " + mSpeed
+                + " m/s\nClouds " + mClouds + " %\nDirection " + mDirection + " deg";
     }
 
 
     //chooses image resource id to descript forecast
-    int getImage(String weatherDescript) {
+    protected int getImage(String weatherDescript) {
         int imageResource;
         switch (weatherDescript) {
             case "light rain":
@@ -95,7 +95,7 @@ public abstract class BaseFragment extends Fragment {
 
 
     //creates xmlParser and gets data in xml format
-    XmlPullParser registerXMLParser(String urlBegin, String city, String urlEnd) {
+    protected XmlPullParser registerXMLParser(String urlBegin, String city, String urlEnd) {
         try {
             URL url = new URL(urlBegin + city + urlEnd);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -119,54 +119,5 @@ public abstract class BaseFragment extends Fragment {
     }
 
 
-    abstract void getDataFromXML(final String city);
-
-
-    public int getHumidity() {
-        return mHumidity;
-    }
-
-    public void setHumidity(int humidity) {
-        this.mHumidity = humidity;
-    }
-
-    public int getClouds() {
-        return mClouds;
-    }
-
-    public void setClouds(int clouds) {
-        this.mClouds = clouds;
-    }
-
-    public double getTemp() {
-        return mTemp;
-    }
-
-    public void setTemp(double temp) {
-        this.mTemp = temp;
-    }
-
-    public double getPressure() {
-        return mPressure;
-    }
-
-    public void setPressure(double pressure) {
-        this.mPressure = pressure;
-    }
-
-    public double getSpeed() {
-        return mSpeed;
-    }
-
-    public void setSpeed(double speed) {
-        this.mSpeed = speed;
-    }
-
-    public double getDirection() {
-        return mDirection;
-    }
-
-    public void setDirection(double direction) {
-        this.mDirection = direction;
-    }
+    protected abstract void getDataFromXML(final String city);
 }

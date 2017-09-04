@@ -27,7 +27,6 @@ public class SixteenDaysFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.view_recycler_view_layout, container, false);
 
         String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
-
         getDataFromXML(cityName);
 
         initializeRecycler(view);
@@ -37,7 +36,7 @@ public class SixteenDaysFragment extends BaseFragment {
 
 
     @Override
-    void getDataFromXML(final String city) {
+    protected void getDataFromXML(final String city) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -58,24 +57,22 @@ public class SixteenDaysFragment extends BaseFragment {
                                     if (xmlParser.getAttributeName(2).equals("max")) {
                                         mMaxTempList.add(xmlParser.getAttributeValue(2));
                                     }
-
+                                    break;
                                 case "pressure":
                                     if (xmlParser.getAttributeName(1).equals("value")) {
                                         mPressureList.add(Double.parseDouble(xmlParser.getAttributeValue(1)));
                                     }
                                     break;
-
                                 case "humidity":
                                     if (xmlParser.getAttributeName(0).equals("value")) {
                                         mHumidityList.add(Integer.parseInt(xmlParser.getAttributeValue(0)));
                                     }
-
+                                    break;
                                 case "windSpeed":
                                     if (xmlParser.getAttributeName(0).equals("mps")) {
                                         mSpeedList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
                                     }
                                     break;
-
                                 case "clouds":
                                     if (xmlParser.getAttributeName(1).equals("all")) {
                                         mCloudsList.add(Integer.parseInt(xmlParser.getAttributeValue(1)));
@@ -84,7 +81,6 @@ public class SixteenDaysFragment extends BaseFragment {
                                         mWeatherList.add(xmlParser.getAttributeValue(0));
                                     }
                                     break;
-
                                 case "windDirection":
                                     if (xmlParser.getAttributeName(0).equals("deg")) {
                                         mDirectionList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
@@ -111,11 +107,11 @@ public class SixteenDaysFragment extends BaseFragment {
                     String date = sdf.format(calendar.getTime());
 
                     int imgResource = getImage(mWeatherList.get(i));
-                    setPressure(mPressureList.get(i));
-                    setHumidity(mHumidityList.get(i));
-                    setSpeed(mSpeedList.get(i));
-                    setClouds(mCloudsList.get(i));
-                    setDirection(mDirectionList.get(i));
+                    mPressure = mPressureList.get(i);
+                    mHumidity = mHumidityList.get(i);
+                    mSpeed = mSpeedList.get(i);
+                    mClouds = mCloudsList.get(i);
+                    mDirection = mDirectionList.get(i);
 
                     mForecastRecyclerList.add(new WeatherParameters(date, imgResource,
                             new StringBuilder(mMinTempList.get(i)).append("/").append(mMaxTempList.get(i))

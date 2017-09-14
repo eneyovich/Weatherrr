@@ -1,25 +1,29 @@
 package com.dzondza.vasya.weatherrr;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.google.gson.Gson;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.util.Calendar;
+import android.widget.Toast;
 
+import com.dzondza.vasya.weatherrr.GsonStructure.TodayGsonStructure;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * shows today's forecast
  */
 
 public class TodayFragment extends BaseFragment {
-    private GsonStructure gsonData;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_today_layout, container, false);
@@ -30,40 +34,44 @@ public class TodayFragment extends BaseFragment {
         return view;
     }
 
+    //sets value to textView
+    private void setToTextView(int textViewId, String information) {
+        TextView tView = (TextView) getView().findViewById(textViewId);
+        tView.setText(information);
+    }
+
 
     @Override
-    protected void getJSON(final String city) {
-        new AsyncTask<Void, Void, Void>() {
+    protected void getJSON(String city) {
+
+        OpenWeatherMapApi weatherMapApi = getRetrofit();
+
+        Map<String, String> parameters = new HashMap<>();
+        if (city == null || city.isEmpty()) {
+            parameters.put("q", "London");
+        } else {
+            parameters.put("q", city);
+        }
+        parameters.put("units", "metric");
+        parameters.put("APPID", "419b4a7ba318ef5286319f89b37ed373");
+
+        Call<TodayGsonStructure> gsonStructureCall = weatherMapApi.getTodayWeather(parameters);
+
+        gsonStructureCall.enqueue(new Callback<TodayGsonStructure>() {
             @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    HttpURLConnection connection = connect("http://api.openweathermap.org/data/2.5/weather?q=",
-                            city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            public void onResponse(Call<TodayGsonStructure> call, Response<TodayGsonStructure> response) {
 
-                    gsonData = new Gson().fromJson(reader, GsonStructure.class);
-
-                    reader.close();
-                    connection.disconnect();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (response.body() != null) {
+                    mDescript = response.body().getWeather()[0].getDescription();
+                    mTemp = response.body().getMain().getTemp();
+                    mPressure = response.body().getMain().getPressure();
+                    mHumidity = response.body().getMain().getHumidity();
+                    mSpeed = response.body().getWind().getSpeed();
+                    mDirection = response.body().getWind().getDeg();
+                    mClouds = response.body().getClouds().getAll();
+                } else {
+                    Toast.makeText(getActivity(), "Data not loaded/found", Toast.LENGTH_SHORT).show();
                 }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-
-                mDescript = gsonData.weather[0].description;
-                mTemp = gsonData.main.temp;
-                mPressure = gsonData.main.pressure;
-                mHumidity = gsonData.main.humidity;
-                mSpeed = gsonData.wind.speed;
-                mDirection = gsonData.wind.deg;
-                mClouds = gsonData.clouds.all;
-
 
                 setToTextView(R.id.text_today_time, Calendar.getInstance().getTime().toString());
 
@@ -78,42 +86,12 @@ public class TodayFragment extends BaseFragment {
                 setToTextView(R.id.text_today_direction, "Direction          " + mDirection + " deg");
                 setToTextView(R.id.text_today_clouds, "Clouds             " + mClouds + " %");
             }
-        }.execute();
-    }
 
-
-    //sets value to textView
-    private void setToTextView(int textViewId, String information) {
-        TextView tView = (TextView) getView().findViewById(textViewId);
-        tView.setText(information);
-    }
-
-
-
-    //Gson structure
-    private class GsonStructure {
-        private Main main;
-        private Wind wind;
-        private Clouds clouds;
-        private Weather[] weather;
-
-        private class Main {
-            private double temp;
-            private double pressure;
-            private int humidity;
-        }
-
-        private class Wind {
-            private double speed;
-            private double deg;
-        }
-
-        private class Clouds {
-            private int all;
-        }
-
-        private class Weather {
-            private String description;
-        }
+            @Override
+            public void onFailure(Call<TodayGsonStructure> call, Throwable t) {
+                Log.v("onFailure", call.request().toString() + "Throwable: " + t);
+                Toast.makeText(getActivity(), "Data not loaded/found", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

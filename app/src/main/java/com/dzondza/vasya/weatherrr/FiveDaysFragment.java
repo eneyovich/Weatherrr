@@ -1,24 +1,26 @@
 package com.dzondza.vasya.weatherrr;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.google.gson.Gson;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import android.widget.Toast;
+
+import com.dzondza.vasya.weatherrr.GsonStructure.FiveDaysGsonStructure;
+
 import java.util.Calendar;
 import java.util.Date;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * shows forecast for 5 days in every 3 hours
  */
 
 public class FiveDaysFragment extends BaseFragment {
-    private GsonStructure gsonData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,44 +36,33 @@ public class FiveDaysFragment extends BaseFragment {
 
 
     @Override
-    protected void getJSON(final String city) {
-        new AsyncTask<Void, Void, Void>() {
+    protected void getJSON(String city) {
+
+        OpenWeatherMapApi weatherMapApi = getRetrofit();
+
+        Call<FiveDaysGsonStructure> gsonStructureCall = null;
+        if (city == null || city.isEmpty()) {
+            gsonStructureCall = weatherMapApi.getFiveDaysWeather("London", "metric", "419b4a7ba318ef5286319f89b37ed373");
+        } else {
+            gsonStructureCall = weatherMapApi.getFiveDaysWeather(city, "metric", "419b4a7ba318ef5286319f89b37ed373");
+        }
+
+        gsonStructureCall.enqueue(new Callback<FiveDaysGsonStructure>() {
             @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    HttpURLConnection connection = connect("http://api.openweathermap.org/data/2.5/forecast?q=",
-                            city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-                    gsonData = new Gson().fromJson(reader, GsonStructure.class);
-
-                    reader.close();
-                    connection.disconnect();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-
-                for (int i = 0; i < gsonData.list.length; i++) {
-
+            public void onResponse(Call<FiveDaysGsonStructure> call, Response<FiveDaysGsonStructure> response) {
+                for (int i = 0; i < 40; i++) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.HOUR_OF_DAY, i*3);
                     Date time = calendar.getTime();
 
-                    mTemp = gsonData.list[i].main.temp;
-                    mPressure = gsonData.list[i].main.pressure;
-                    mHumidity = gsonData.list[i].main.humidity;
-                    mDirection = gsonData.list[i].wind.deg;
-                    mSpeed = gsonData.list[i].wind.speed;
-                    mClouds = gsonData.list[i].clouds.all;
+                    mTemp = response.body().getList()[i].main.getTemp();
+                    mPressure = response.body().getList()[i].main.getPressure();
+                    mHumidity = response.body().getList()[i].main.getHumidity();
+                    mDirection = response.body().getList()[i].wind.getDeg();
+                    mSpeed = response.body().getList()[i].wind.getSpeed();
+                    mClouds = response.body().getList()[i].clouds.getAll();
 
-                    mDescript = gsonData.list[i].weather[0].description;
+                    mDescript = response.body().getList()[i].weather[0].getDescription();
                     int imgResource = getImage(mDescript);
 
 
@@ -80,39 +71,12 @@ public class FiveDaysFragment extends BaseFragment {
                     mRecyclerAdapter.notifyDataSetChanged();
                 }
             }
-        }.execute();
-    }
 
-
-    //Gson structure
-    private class GsonStructure {
-
-        private List[] list;
-
-        private class List {
-            private Main main;
-            private Wind wind;
-            private Clouds clouds;
-            private Weather[] weather;
-
-            private class Main {
-                private double temp;
-                private double pressure;
-                private int humidity;
+            @Override
+            public void onFailure(Call<FiveDaysGsonStructure> call, Throwable t) {
+                Log.v("onFailure", call.request().toString() + "Throwable: " + t);
+                Toast.makeText(getActivity(), "Data not loaded/found", Toast.LENGTH_SHORT).show();
             }
-
-            private class Weather {
-                private String description;
-            }
-
-            private class Clouds {
-                private int all;
-            }
-
-            private class Wind {
-                private double speed;
-                private double deg;
-            }
-        }
+        });
     }
 }

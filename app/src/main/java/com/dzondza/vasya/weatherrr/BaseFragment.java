@@ -11,6 +11,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 /**
  * basic fragment for today, 5- and 16- days fragments
@@ -92,6 +95,17 @@ public abstract class BaseFragment extends Fragment {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    protected OpenWeatherMapApi getRetrofit() {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://api.openweathermap.org/data/2.5/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(OpenWeatherMapApi.class);
     }
 
 

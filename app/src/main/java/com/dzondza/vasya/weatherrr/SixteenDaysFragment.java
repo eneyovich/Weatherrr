@@ -27,7 +27,12 @@ public class SixteenDaysFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.view_recycler_view_layout, container, false);
 
         String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
-        getDataFromXML(cityName);
+
+        if (!cityName.isEmpty() && cityName != null) {
+            getDataFromXML(cityName);
+        } else {
+            getDataFromXML("London");
+        }
 
         initializeRecycler(view);
 

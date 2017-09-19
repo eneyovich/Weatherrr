@@ -27,7 +27,11 @@ public class FiveDaysFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.view_recycler_view_layout, container, false);
 
         String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
-        getJSON(cityName);
+        if (cityName.isEmpty() || cityName == null) {
+            getJSON("London");
+        } else {
+            getJSON(cityName);
+        }
 
         initializeRecycler(view);
 

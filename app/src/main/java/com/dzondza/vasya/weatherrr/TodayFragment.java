@@ -23,7 +23,11 @@ public class TodayFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_today_layout, container, false);
 
         String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY, "City not Found");
-        getJSON(cityName);
+        if (cityName.isEmpty() || cityName == null) {
+            getJSON("London");
+        } else {
+            getJSON(cityName);
+        }
 
         return view;
     }

@@ -25,7 +25,11 @@ public class SixteenDaysFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.view_recycler_view_layout, container, false);
 
         String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY);
-        getJSON(cityName);
+        if (cityName != null && !cityName.isEmpty()) {
+            getJSON(cityName);
+        } else {
+            getJSON("London");
+        }
 
         initializeRecycler(view);
 

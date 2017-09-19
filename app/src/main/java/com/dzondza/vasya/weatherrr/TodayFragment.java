@@ -25,7 +25,11 @@ public class TodayFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_today_layout, container, false);
 
         String cityName = getArguments().getString(MainActivity.CITY_DIALOG_KEY);
-        getJSON(cityName);
+        if (cityName != null && !cityName.isEmpty()) {
+            getJSON(cityName);
+        } else {
+            getJSON("London");
+        }
 
         return view;
     }

@@ -1,7 +1,6 @@
 package com.dzondza.vasya.weatherrr;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -57,12 +56,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         View navigButtonView = mNavigationView.getMenu().findItem(R.id.nav_city_button).getActionView();
         Button cityButton = navigButtonView.findViewById(R.id.button_city);
-        cityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createCityDialog().show();
-            }
-        });
+
+        cityButton.setOnClickListener(view -> createCityDialog().show());
 
         mFragment = new TodayFragment();
 
@@ -124,24 +119,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDialogView = getLayoutInflater().inflate(R.layout.view_city_dialog, null, false);
         dialog.setView(mDialogView);
 
-        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
+        dialog.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
+        
 
-        dialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                EditText cityEditText = mDialogView.findViewById(R.id.edit_text_city);
-                mDialogCityText = cityEditText.getText().toString();
-                mToolbar.setTitle(mDialogCityText.toUpperCase());
+        dialog.setPositiveButton("Accept", (dialogInterface, i) -> {
+            EditText cityEditText = mDialogView.findViewById(R.id.edit_text_city);
+            mDialogCityText = cityEditText.getText().toString();
+            mToolbar.setTitle(mDialogCityText.toUpperCase());
 
-                onNavigationItemSelected(mNavigationView.getMenu().findItem(R.id.nav_weatherToday));
+            onNavigationItemSelected(mNavigationView.getMenu().findItem(R.id.nav_weatherToday));
 
-                dialogInterface.dismiss();
-            }
+            dialogInterface.dismiss();
         });
 
         return dialog.create();

@@ -87,17 +87,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
 
-    protected HttpURLConnection connect(String urlBegin, String city, String urlEnd) {
-        try {
-            URL url = new URL(urlBegin + city + urlEnd);
-            return (HttpURLConnection) url.openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
     protected OpenWeatherMapApi getRetrofit() {
 
         Retrofit retrofit = new Retrofit.Builder()

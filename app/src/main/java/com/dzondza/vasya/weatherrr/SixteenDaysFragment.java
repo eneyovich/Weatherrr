@@ -1,6 +1,5 @@
 package com.dzondza.vasya.weatherrr;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,21 +37,11 @@ public class SixteenDaysFragment extends BaseFragment {
 
     @Override
     protected void getJSON(final String city) {
-        new AsyncTask<Void, Void, Void>() {
+        new Thread(() -> {
+            mBasicJson = initializeBasicJson("http://api.openweathermap.org/data/2.5/forecast/daily?q=",
+                    city, "&units=metric&cnt=16&APPID=419b4a7ba318ef5286319f89b37ed373");
 
-            @Override
-            protected Void doInBackground(Void... voids) {
-
-                mBasicJson = initializeBasicJson("http://api.openweathermap.org/data/2.5/forecast/daily?q=",
-                        city, "&units=metric&cnt=16&APPID=419b4a7ba318ef5286319f89b37ed373");
-
-                return null;
-            }
-
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-
+            getActivity().runOnUiThread(() -> {
                 try {
                     JSONArray allDaysJson = mBasicJson.getJSONArray("list");
 
@@ -90,7 +79,7 @@ public class SixteenDaysFragment extends BaseFragment {
                 } catch (Exception e) {
                     Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
                 }
-            }
-        }.execute();
+            });
+        }).start();
     }
 }

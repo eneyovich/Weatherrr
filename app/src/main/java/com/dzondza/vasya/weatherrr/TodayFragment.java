@@ -1,6 +1,5 @@
 package com.dzondza.vasya.weatherrr;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Calendar;
-
 
 /**
  * shows today's forecast
@@ -35,20 +33,11 @@ public class TodayFragment extends BaseFragment {
 
     @Override
     protected void getJSON(final String city) {
+        new Thread(() -> {
+            mBasicJson = initializeBasicJson("http://api.openweathermap.org/data/2.5/weather?q=",
+                    city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
 
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-
-                mBasicJson = initializeBasicJson("http://api.openweathermap.org/data/2.5/weather?q=",
-                        city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
+            getActivity().runOnUiThread(() -> {
                 try {
                     JSONObject mainJson = mBasicJson.getJSONObject("main");
                     JSONObject windJson = mBasicJson.getJSONObject("wind");
@@ -79,8 +68,8 @@ public class TodayFragment extends BaseFragment {
                 } catch (JSONException e) {
                     Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
                 }
-            }
-        }.execute();
+            });
+        }).start();
     }
 
 

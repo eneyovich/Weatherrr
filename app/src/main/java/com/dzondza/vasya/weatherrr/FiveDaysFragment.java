@@ -1,6 +1,5 @@
 package com.dzondza.vasya.weatherrr;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -41,19 +40,11 @@ public class FiveDaysFragment extends BaseFragment {
 
     @Override
     protected void getJSON(final String city) {
-        new AsyncTask<Void, Void, Void>() {
+        new Thread(() -> {
+            mBasicJson = initializeBasicJson("http://api.openweathermap.org/data/2.5/forecast?q=",
+                    city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
 
-            @Override
-            protected Void doInBackground(Void... voids) {
-
-                mBasicJson = initializeBasicJson("http://api.openweathermap.org/data/2.5/forecast?q=",
-                        city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
+            getActivity().runOnUiThread(() -> {
                 try {
                     JSONArray allDaysJson = mBasicJson.getJSONArray("list");
                     for (int i = 0; i < allDaysJson.length(); i++) {
@@ -70,7 +61,7 @@ public class FiveDaysFragment extends BaseFragment {
                         mClouds = oneDayJSON.getJSONObject("clouds").getInt("all");
 
                         Calendar calendar = Calendar.getInstance();
-                        calendar.add(Calendar.HOUR_OF_DAY, i*3);
+                        calendar.add(Calendar.HOUR_OF_DAY, i * 3);
                         Date time = calendar.getTime();
 
 
@@ -86,7 +77,7 @@ public class FiveDaysFragment extends BaseFragment {
                 } catch (JSONException e) {
                     Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
                 }
-            }
-        }.execute();
+            });
+        }).start();
     }
 }

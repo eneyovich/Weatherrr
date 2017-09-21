@@ -1,6 +1,5 @@
 package com.dzondza.vasya.weatherrr;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,68 +35,62 @@ public class TodayFragment extends BaseFragment {
     }
 
 
+
     @Override
     protected void getDataFromXML(final String city) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try {
+        new Thread(() -> {
+            try {
+                XmlPullParser xmlParser = registerXMLParser("http://api.openweathermap.org/data/2.5/weather?q=",
+                        city, "&mode=xml&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
 
-                    XmlPullParser xmlParser = registerXMLParser("http://api.openweathermap.org/data/2.5/weather?q=",
-                            city, "&mode=xml&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
+                while (xmlParser.getEventType() != XmlPullParser.END_DOCUMENT) {
 
-                    while (xmlParser.getEventType() != XmlPullParser.END_DOCUMENT) {
+                    if (xmlParser.getEventType() == XmlPullParser.START_TAG) {
 
-                        if (xmlParser.getEventType() == XmlPullParser.START_TAG) {
+                        switch (xmlParser.getName()) {
 
-                            switch (xmlParser.getName()) {
-
-                                case "temperature":
-                                    if (xmlParser.getAttributeName(0).equals("value")) {
-                                        mTemp = Double.parseDouble(xmlParser.getAttributeValue(0));
-                                    }
-                                    break;
-                                case "pressure":
-                                    if (xmlParser.getAttributeName(0).equals("value")) {
-                                        mPressure = Double.parseDouble(xmlParser.getAttributeValue(0));
-                                    }
-                                    break;
-                                case "humidity":
-                                    if (xmlParser.getAttributeName(0).equals("value")) {
-                                        mHumidity = Integer.parseInt(xmlParser.getAttributeValue(0));
-                                    }
-                                    break;
-                                case "speed":
-                                    if (xmlParser.getAttributeName(0).equals("value")) {
-                                        mSpeed = Double.parseDouble(xmlParser.getAttributeValue(0));
-                                    }
-                                    break;
-                                case "clouds":
-                                    if (xmlParser.getAttributeName(1).equals("name")) {
-                                        mWeatherList.add(xmlParser.getAttributeValue(1));
-                                    }
-                                    if (xmlParser.getAttributeName(0).equals("value")) {
-                                        mClouds = Integer.parseInt(xmlParser.getAttributeValue(0));
-                                    }
-                                    break;
-                                case "direction":
-                                    if (xmlParser.getAttributeName(0).equals("value")) {
-                                        mDirection = Double.parseDouble(xmlParser.getAttributeValue(0));
-                                    }
-                                    break;
-                            }
+                            case "temperature":
+                                if (xmlParser.getAttributeName(0).equals("value")) {
+                                    mTemp = Double.parseDouble(xmlParser.getAttributeValue(0));
+                                }
+                                break;
+                            case "pressure":
+                                if (xmlParser.getAttributeName(0).equals("value")) {
+                                    mPressure = Double.parseDouble(xmlParser.getAttributeValue(0));
+                                }
+                                break;
+                            case "humidity":
+                                if (xmlParser.getAttributeName(0).equals("value")) {
+                                    mHumidity = Integer.parseInt(xmlParser.getAttributeValue(0));
+                                }
+                                break;
+                            case "speed":
+                                if (xmlParser.getAttributeName(0).equals("value")) {
+                                    mSpeed = Double.parseDouble(xmlParser.getAttributeValue(0));
+                                }
+                                break;
+                            case "clouds":
+                                if (xmlParser.getAttributeName(1).equals("name")) {
+                                    mWeatherList.add(xmlParser.getAttributeValue(1));
+                                }
+                                if (xmlParser.getAttributeName(0).equals("value")) {
+                                    mClouds = Integer.parseInt(xmlParser.getAttributeValue(0));
+                                }
+                                break;
+                            case "direction":
+                                if (xmlParser.getAttributeName(0).equals("value")) {
+                                    mDirection = Double.parseDouble(xmlParser.getAttributeValue(0));
+                                }
+                                break;
                         }
-                        xmlParser.next();
                     }
-                } catch (XmlPullParserException | IOException e) {
-                    e.printStackTrace();
+                    xmlParser.next();
                 }
-                return null;
+            } catch (XmlPullParserException | IOException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-
+            getActivity().runOnUiThread(() -> {
                 try {
                     setToTextView(R.id.text_today_time, Calendar.getInstance().getTime().toString());
 
@@ -114,9 +107,10 @@ public class TodayFragment extends BaseFragment {
                 }catch (Exception e) {
                     Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
                 }
-            }
-        }.execute();
+            });
+        }).start();
     }
+
 
     //sets value to textView
     private void setToTextView(int textViewId, String information) {

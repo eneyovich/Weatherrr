@@ -1,6 +1,5 @@
 package com.dzondza.vasya.weatherrr;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,71 +39,66 @@ public class SixteenDaysFragment extends BaseFragment {
     }
 
 
+
     @Override
     protected void getDataFromXML(final String city) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    XmlPullParser xmlParser = registerXMLParser("http://api.openweathermap.org/data/2.5/forecast/daily?q=",
-                            city, "&mode=xml&units=metric&cnt=16&APPID=419b4a7ba318ef5286319f89b37ed373");
+        new Thread(() -> {
+            try {
+                XmlPullParser xmlParser = registerXMLParser("http://api.openweathermap.org/data/2.5/forecast/daily?q=",
+                        city, "&mode=xml&units=metric&cnt=16&APPID=419b4a7ba318ef5286319f89b37ed373");
 
-                    while (xmlParser.getEventType() != XmlPullParser.END_DOCUMENT) {
+                while (xmlParser.getEventType() != XmlPullParser.END_DOCUMENT) {
 
-                        if (xmlParser.getEventType() == XmlPullParser.START_TAG) {
+                    if (xmlParser.getEventType() == XmlPullParser.START_TAG) {
 
-                            switch (xmlParser.getName()) {
+                        switch (xmlParser.getName()) {
 
-                                case "temperature":
-                                    if (xmlParser.getAttributeName(1).equals("min")) {
-                                        mMinTempList.add(xmlParser.getAttributeValue(1));
-                                    }
-                                    if (xmlParser.getAttributeName(2).equals("max")) {
-                                        mMaxTempList.add(xmlParser.getAttributeValue(2));
-                                    }
-                                    break;
-                                case "pressure":
-                                    if (xmlParser.getAttributeName(1).equals("value")) {
-                                        mPressureList.add(Double.parseDouble(xmlParser.getAttributeValue(1)));
-                                    }
-                                    break;
-                                case "humidity":
-                                    if (xmlParser.getAttributeName(0).equals("value")) {
-                                        mHumidityList.add(Integer.parseInt(xmlParser.getAttributeValue(0)));
-                                    }
-                                    break;
-                                case "windSpeed":
-                                    if (xmlParser.getAttributeName(0).equals("mps")) {
-                                        mSpeedList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
-                                    }
-                                    break;
-                                case "clouds":
-                                    if (xmlParser.getAttributeName(1).equals("all")) {
-                                        mCloudsList.add(Integer.parseInt(xmlParser.getAttributeValue(1)));
-                                    }
-                                    if (xmlParser.getAttributeName(0).equals("value")) {
-                                        mWeatherList.add(xmlParser.getAttributeValue(0));
-                                    }
-                                    break;
-                                case "windDirection":
-                                    if (xmlParser.getAttributeName(0).equals("deg")) {
-                                        mDirectionList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
-                                    }
-                                    break;
-                            }
+                            case "temperature":
+                                if (xmlParser.getAttributeName(1).equals("min")) {
+                                    mMinTempList.add(xmlParser.getAttributeValue(1));
+                                }
+                                if (xmlParser.getAttributeName(2).equals("max")) {
+                                    mMaxTempList.add(xmlParser.getAttributeValue(2));
+                                }
+                                break;
+                            case "pressure":
+                                if (xmlParser.getAttributeName(1).equals("value")) {
+                                    mPressureList.add(Double.parseDouble(xmlParser.getAttributeValue(1)));
+                                }
+                                break;
+                            case "humidity":
+                                if (xmlParser.getAttributeName(0).equals("value")) {
+                                    mHumidityList.add(Integer.parseInt(xmlParser.getAttributeValue(0)));
+                                }
+                                break;
+                            case "windSpeed":
+                                if (xmlParser.getAttributeName(0).equals("mps")) {
+                                    mSpeedList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
+                                }
+                                break;
+                            case "clouds":
+                                if (xmlParser.getAttributeName(1).equals("all")) {
+                                    mCloudsList.add(Integer.parseInt(xmlParser.getAttributeValue(1)));
+                                }
+                                if (xmlParser.getAttributeName(0).equals("value")) {
+                                    mWeatherList.add(xmlParser.getAttributeValue(0));
+                                }
+                                break;
+                            case "windDirection":
+                                if (xmlParser.getAttributeName(0).equals("deg")) {
+                                    mDirectionList.add(Double.parseDouble(xmlParser.getAttributeValue(0)));
+                                }
+                                break;
                         }
-                        xmlParser.next();
                     }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    xmlParser.next();
                 }
-                return null;
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-
+            getActivity().runOnUiThread(() -> {
                 for (int i = 0; i < mWeatherList.size(); i++) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.DAY_OF_YEAR, i);
@@ -124,7 +118,7 @@ public class SixteenDaysFragment extends BaseFragment {
 
                     mRecyclerAdapter.notifyDataSetChanged();
                 }
-            }
-        }.execute();
+            });
+        }).start();
     }
 }

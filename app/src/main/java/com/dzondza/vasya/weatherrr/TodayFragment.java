@@ -1,6 +1,5 @@
 package com.dzondza.vasya.weatherrr;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.util.Calendar;
-
 
 /**
  * shows today's forecast
@@ -35,31 +33,31 @@ public class TodayFragment extends BaseFragment {
     }
 
 
+    //sets value to textView
+    private void setToTextView(int textViewId, String information) {
+        TextView tView = (TextView) getView().findViewById(textViewId);
+        tView.setText(information);
+    }
+
+
     @Override
     protected void getJSON(final String city) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    HttpURLConnection connection = connect("http://api.openweathermap.org/data/2.5/weather?q=",
-                            city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        new Thread(() -> {
+            try {
+                HttpURLConnection connection = connect("http://api.openweathermap.org/data/2.5/weather?q=",
+                        city, "&units=metric&APPID=419b4a7ba318ef5286319f89b37ed373");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-                    gsonData = new Gson().fromJson(reader, GsonStructure.class);
+                gsonData = new Gson().fromJson(reader, GsonStructure.class);
 
-                    reader.close();
-                    connection.disconnect();
+                reader.close();
+                connection.disconnect();
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-
+            getActivity().runOnUiThread(() -> {
                 mDescript = gsonData.weather[0].description;
                 mTemp = gsonData.main.temp;
                 mPressure = gsonData.main.pressure;
@@ -81,17 +79,9 @@ public class TodayFragment extends BaseFragment {
                 setToTextView(R.id.text_today_speed, "Speed              " + mSpeed + " m/s");
                 setToTextView(R.id.text_today_direction, "Direction          " + mDirection + " deg");
                 setToTextView(R.id.text_today_clouds, "Clouds             " + mClouds + " %");
-            }
-        }.execute();
+            });
+        }).start();
     }
-
-
-    //sets value to textView
-    private void setToTextView(int textViewId, String information) {
-        TextView tView = (TextView) getView().findViewById(textViewId);
-        tView.setText(information);
-    }
-
 
 
     //Gson structure

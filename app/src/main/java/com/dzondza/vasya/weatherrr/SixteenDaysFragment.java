@@ -1,6 +1,5 @@
 package com.dzondza.vasya.weatherrr;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 
 /**
  * shows forecast for 16 days
@@ -39,29 +37,22 @@ public class SixteenDaysFragment extends BaseFragment {
 
     @Override
     protected void getJSON(final String city) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    HttpURLConnection connection = connect("http://api.openweathermap.org/data/2.5/forecast/daily?q=",
-                            city, "&units=metric&cnt=16&APPID=419b4a7ba318ef5286319f89b37ed373");
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        new Thread(() -> {
+            try {
+                HttpURLConnection connection = connect("http://api.openweathermap.org/data/2.5/forecast/daily?q=",
+                        city, "&units=metric&cnt=16&APPID=419b4a7ba318ef5286319f89b37ed373");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-                    gsonData = new Gson().fromJson(reader, GsonStructure.class);
+                gsonData = new Gson().fromJson(reader, GsonStructure.class);
 
-                    reader.close();
-                    connection.disconnect();
+                reader.close();
+                connection.disconnect();
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-
+            getActivity().runOnUiThread(() -> {
                 for (int i = 0; i < gsonData.list.length; i++) {
 
                     mMinTemp = gsonData.list[i].temp.min;
@@ -86,8 +77,8 @@ public class SixteenDaysFragment extends BaseFragment {
                             .toString(), weatherParamsInTextView()));
                     mRecyclerAdapter.notifyDataSetChanged();
                 }
-            }
-        }.execute();
+            });
+        }).start();
     }
 
 

@@ -39,14 +39,12 @@ public abstract class BaseFragment extends Fragment {
         mForecastRecyclerList = new ArrayList<>();
 
         RecyclerView mRecyclerView = view.findViewById(R.id.my_recycler_view);
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(manager);
 
         mRecyclerAdapter = new RecyclerAdapter(mForecastRecyclerList);
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(),
-                manager.getOrientation()));
+                ((LinearLayoutManager)mRecyclerView.getLayoutManager()).getOrientation()));
 
         mRecyclerView.setHasFixedSize(true);
     }

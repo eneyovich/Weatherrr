@@ -1,6 +1,7 @@
 package com.dzondza.vasya.weatherrr;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,9 @@ import android.widget.Toast;
 import com.dzondza.vasya.weatherrr.GsonStructure.SixteenDaysGsonStructure;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,24 +52,26 @@ public class SixteenDaysFragment extends BaseFragment {
 
         gsonStructureCall.enqueue(new Callback<SixteenDaysGsonStructure>() {
             @Override
-            public void onResponse(Call<SixteenDaysGsonStructure> call, Response<SixteenDaysGsonStructure> response) {
+            public void onResponse(@NonNull Call<SixteenDaysGsonStructure> call,
+                                   @NonNull Response<SixteenDaysGsonStructure> response) {
 
-                for (int i = 0; i < 16; i++) {
+                List<SixteenDaysGsonStructure.WeatherList> responseList = response.body().getList();
+                for (int i = 0; i < responseList.size(); i++) {
 
-                    mMinTemp = response.body().getList().get(i).temp.getMin();
-                    mMaxTemp = response.body().getList().get(i).temp.getMax();
-                    mPressure = response.body().getList().get(i).getPressure();
-                    mHumidity = response.body().getList().get(i).getHumidity();
-                    mSpeed = response.body().getList().get(i).getSpeed();
-                    mClouds = response.body().getList().get(i).getClouds();
-                    mDirection = response.body().getList().get(i).getDeg();
+                    mMinTemp = responseList.get(i).temp.getMin();
+                    mMaxTemp = responseList.get(i).temp.getMax();
+                    mPressure = responseList.get(i).getPressure();
+                    mHumidity = responseList.get(i).getHumidity();
+                    mSpeed = responseList.get(i).getSpeed();
+                    mClouds = responseList.get(i).getClouds();
+                    mDirection = responseList.get(i).getDeg();
 
                     Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.DAY_OF_YEAR, i);
                     SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd y");
                     String date = sdf.format(calendar.getTime());
 
-                    mDescript = response.body().getList().get(i).weather[0].getDescription();
+                    mDescript = responseList.get(i).weather[0].getDescription();
                     int imgResource = getImage(mDescript);
 
 

@@ -1,6 +1,7 @@
 package com.dzondza.vasya.weatherrr;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,8 +50,9 @@ public class FiveDaysFragment extends BaseFragment {
 
         gsonStructureCall.enqueue(new Callback<FiveDaysGsonStructure>() {
             @Override
-            public void onResponse(Call<FiveDaysGsonStructure> call, Response<FiveDaysGsonStructure> response) {
-                for (int i = 0; i < 40; i++) {
+            public void onResponse(@NonNull Call<FiveDaysGsonStructure> call,
+                                   @NonNull Response<FiveDaysGsonStructure> response) {
+                for (int i = 0; i < response.body().getList().length; i++) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.add(Calendar.HOUR_OF_DAY, i*3);
                     Date time = calendar.getTime();

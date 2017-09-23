@@ -21,10 +21,8 @@ import android.widget.EditText;
  * creates drawerLayout, toolbar, Dialog view
  */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private Fragment mFragment;
     private DrawerLayout mDrawerLayout;
     private String mDialogCityText;
-    private View mDialogView;
     private Toolbar mToolbar;
     private NavigationView mNavigationView;
     public static final String CITY_DIALOG_KEY = "KEY";
@@ -35,38 +33,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        mToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(mToolbar);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
-                R.string.open_drawer, R.string.close_drawer);
-        toggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-        mNavigationView.setNavigationItemSelectedListener(this);
-
+        createNavigationDrawer();
 
         createCityDialog().show();
 
-
-        View navigButtonView = mNavigationView.getMenu().findItem(R.id.nav_city_button).getActionView();
-        Button cityButton = navigButtonView.findViewById(R.id.button_city);
-        cityButton.setOnClickListener(view -> createCityDialog().show());
-
-        mFragment = new TodayFragment();
-
-        onNavigationItemSelected(mNavigationView.getMenu().findItem(R.id.nav_weatherToday));
+        createCityButton();
     }
 
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+        Fragment mFragment = new TodayFragment();
         switch (item.getItemId()) {
             case R.id.nav_weatherToday:
                 mFragment = new TodayFragment();
@@ -87,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if (mFragment != null) {
-
             //attaches text(city name), written in cityEditText  to mFragment
             Bundle args = new Bundle();
             args.putString(CITY_DIALOG_KEY, mDialogCityText);
@@ -112,10 +88,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    private void createNavigationDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        mToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(mToolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
+                R.string.open_drawer, R.string.close_drawer);
+        toggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+        onNavigationItemSelected(mNavigationView.getMenu().findItem(R.id.nav_weatherToday));
+    }
+
+
     //Dialog window to write in city and open TodayFragment with this city's forecast
     private Dialog createCityDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        mDialogView = getLayoutInflater().inflate(R.layout.view_city_dialog, null, false);
+        View mDialogView = getLayoutInflater().inflate(R.layout.view_city_dialog, null, false);
         dialog.setView(mDialogView);
 
         dialog.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
@@ -131,5 +126,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         return dialog.create();
+    }
+
+
+    private void createCityButton() {
+        View navigButtonView = mNavigationView.getMenu().findItem(R.id.nav_city_button).getActionView();
+        Button cityButton = navigButtonView.findViewById(R.id.button_city);
+        cityButton.setOnClickListener(view -> createCityDialog().show());
     }
 }

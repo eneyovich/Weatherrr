@@ -35,10 +35,10 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        holder.timeTextView.setText(weatherList.get(position).weatherDate);
-        holder.forecastImageView.setImageResource(weatherList.get(position).imageResource);
-        holder.tempTextView.setText(weatherList.get(position).temper);
-        holder.weatherDataTextView.setText(weatherList.get(position).weatherData);
+        holder.timeTextView.setText(weatherList.get(position).getWeatherDate());
+        holder.forecastImageView.setImageResource(weatherList.get(position).getImageResource());
+        holder.tempTextView.setText(weatherList.get(position).getTemper());
+        holder.weatherDataTextView.setText(weatherList.get(position).getWeatherData());
     }
 
 
